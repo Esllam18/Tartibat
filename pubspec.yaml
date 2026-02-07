@@ -33,6 +33,7 @@ dependencies:
   
   # For phone call functionality
   url_launcher: ^6.2.3
+  cached_network_image: ^3.4.1
 
 
 dev_dependencies:

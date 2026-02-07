@@ -9,33 +9,38 @@ class SplashTextBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final r = context.responsive;
-
-    return Column(
-      children: [
-        Text(
-          'app_name'.tr(context),
-          textAlign: TextAlign.center,
-          style: GoogleFonts.cairo(
-            fontSize: r.fontSize(36),
-            fontWeight: FontWeight.w800,
-            color: Colors.white,
-            height: 1.0,
-          ),
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(milliseconds: 900),
+      curve: Curves.easeOutCubic,
+      builder: (_, t, __) => Opacity(
+        opacity: t,
+        child: Transform.translate(
+          offset: Offset(0, (1 - t) * 10),
+          child: Column(children: [
+            Text('ترتيبات',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.cairo(
+                    fontSize: r.fontSize(34),
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white)),
+            SizedBox(height: r.spacing(4)),
+            Text('Tarteebat',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                    fontSize: r.fontSize(18),
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white70)),
+            SizedBox(height: r.spacing(10)),
+            Text('splash_tagline'.tr(context),
+                textAlign: TextAlign.center,
+                style: GoogleFonts.cairo(
+                    fontSize: r.fontSize(14),
+                    color: Colors.white70,
+                    height: 1.3)),
+          ]),
         ),
-        SizedBox(height: r.spacing(8)),
-        Text(
-          'splash_tagline'.tr(context),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: GoogleFonts.cairo(
-            fontSize: r.fontSize(14),
-            fontWeight: FontWeight.w500,
-            color: Colors.white.withOpacity(.88),
-            height: 1.35,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

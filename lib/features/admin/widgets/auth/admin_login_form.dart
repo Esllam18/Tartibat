@@ -26,7 +26,6 @@ class _AdminLoginFormState extends State<AdminLoginForm> {
   Future<void> _login() async {
     setState(() => _isLoading = true);
     await Future.delayed(const Duration(seconds: 1));
-    // TODO: Implement actual login
     widget.onLogin();
   }
 

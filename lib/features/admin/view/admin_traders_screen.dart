@@ -16,7 +16,7 @@ class AdminTradersScreen extends StatefulWidget {
 class _AdminTradersScreenState extends State<AdminTradersScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void initState() {

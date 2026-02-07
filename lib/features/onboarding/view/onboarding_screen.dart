@@ -5,43 +5,36 @@ import '../widgets/onboarding_page_view.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
-
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
+  final _controller = PageController();
+  int _page = 0;
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
-  void _onPageChanged(int page) {
-    setState(() => _currentPage = page);
-  }
+  void _onChanged(int p) => setState(() => _page = p);
 
-  Future<void> _completeOnboarding() async {
+  Future<void> _finish() async {
     await OnboardingCacheHelper().setOnboardingCompleted();
     if (!mounted) return;
     Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const AuthScreen()),
-    );
+        context, MaterialPageRoute(builder: (_) => const AuthScreen()));
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: OnboardingPageView(
-        pageController: _pageController,
-        currentPage: _currentPage,
-        onPageChanged: _onPageChanged,
-        onComplete: _completeOnboarding,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        body: OnboardingPageView(
+          pageController: _controller,
+          currentPage: _page,
+          onPageChanged: _onChanged,
+          onComplete: _finish,
+        ),
+      );
 }
