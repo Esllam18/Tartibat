@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:tartibat/features/trader/widgets/orders/order_card.dart';
 import '../../../../core/utils/responsive.dart';
+import 'product_card_list.dart';
 
 class ProductsList extends StatelessWidget {
-  const ProductsList({super.key});
+  final List<Map<String, dynamic>> products;
+
+  const ProductsList({super.key, required this.products});
 
   @override
   Widget build(BuildContext context) {
     final r = context.responsive;
 
-    return GridView.builder(
-      padding: EdgeInsets.all(r.paddingHorizontal),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: r.gridColumns,
-        crossAxisSpacing: r.spacing(12),
-        mainAxisSpacing: r.spacing(12),
-        childAspectRatio: 0.75,
-      ),
-      itemCount: 12,
-      itemBuilder: (context, index) => TraderOrderCard(
-        index: index,
-        status: 'new',
-      ),
+    return ListView.builder(
+      padding: EdgeInsets.all(r.spacing(16)),
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        return ProductCardList(product: products[index]);
+      },
     );
   }
 }

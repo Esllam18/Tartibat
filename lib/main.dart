@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:tartibat/features/admin/view/admin_login_screen.dart';
-import 'package:tartibat/features/admin/view/admin_main_layout.dart';
-import 'package:tartibat/features/admin/view/admin_orders_screen.dart';
-import 'package:tartibat/features/admin/view/admin_traders_screen.dart';
 import 'core/localization/app_localizations.dart';
 import 'core/localization/locale_cubit.dart';
 import 'features/splash/view/splash_screen.dart';

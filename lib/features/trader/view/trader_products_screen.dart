@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/widgets/loading_state.dart';
-import '../widgets/products/products_empty.dart';
-import '../widgets/trader_products_grid.dart';
-import '../widgets/trader_products_list.dart';
-import '../widgets/trader_search_bar.dart';
+import '../widgets/products/products_app_bar.dart';
+import '../widgets/products/products_tabs.dart';
+import '../widgets/products/approved_products_tab.dart';
+import '../widgets/products/pending_products_tab.dart';
 import 'add_product_screen.dart';
 
 class TraderProductsScreen extends StatefulWidget {
@@ -14,55 +12,46 @@ class TraderProductsScreen extends StatefulWidget {
   State<TraderProductsScreen> createState() => _TraderProductsScreenState();
 }
 
-class _TraderProductsScreenState extends State<TraderProductsScreen> {
-  bool _isGridView = true;
-  bool _isLoading = false;
+class _TraderProductsScreenState extends State<TraderProductsScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-  // Mock data - replace with real data from backend
-  final List<Map<String, dynamic>> _products = [
-    {
-      'id': 1,
-      'name': 'Luxury Sofa',
-      'price': 450000,
-      'image':
-          'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
-    },
-    {
-      'id': 2,
-      'name': 'Dining Table',
-      'price': 320000,
-      'image':
-          'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=400',
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Colors.white,
+      appBar: ProductsAppBar(onAdd: _navigateToAdd),
       body: Column(
         children: [
-          TraderSearchBar(
-            onViewToggle: () => setState(() => _isGridView = !_isGridView),
-          ),
+          ProductsTabs(controller: _tabController),
           Expanded(
-            child: _isLoading
-                ? const LoadingState()
-                : _products.isEmpty
-                    ? ProductsEmpty(onAddProduct: _navigateToAddProduct)
-                    : _isGridView
-                        ? TraderProductsGrid(products: _products)
-                        : TraderProductsList(products: _products),
+            child: TabBarView(
+              controller: _tabController,
+              children: const [
+                ApprovedProductsTab(),
+                PendingProductsTab(),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  void _navigateToAddProduct() {
+  void _navigateToAdd() {
     Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const AddProductScreen()),
-    );
+        context, MaterialPageRoute(builder: (_) => const AddProductScreen()));
   }
 }

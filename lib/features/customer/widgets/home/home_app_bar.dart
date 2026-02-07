@@ -41,23 +41,19 @@ class HomeAppBar extends StatelessWidget {
               children: [
                 Text(
                   _getGreeting(context),
-                  style: AppTextStyles.bodyMediumStatic.copyWith(
-                    color: Colors.white70,
-                  ),
+                  style: AppTextStyles.bodyMediumStatic
+                      .copyWith(color: Colors.white70),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'welcome_to'.tr(context),
-                  style: AppTextStyles.h1Static.copyWith(
-                    color: Colors.white,
-                    fontSize: 22,
-                  ),
+                  style: AppTextStyles.h1Static
+                      .copyWith(color: Colors.white, fontSize: 22),
                 ),
                 Text(
                   'choose_furniture'.tr(context),
-                  style: AppTextStyles.bodySmall(
-                    context,
-                  ).copyWith(color: Colors.white70),
+                  style: AppTextStyles.bodySmall(context)
+                      .copyWith(color: Colors.white70),
                 ),
               ],
             ),
@@ -77,15 +73,11 @@ class HomeAppBar extends StatelessWidget {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(
-                    AppDimensions.radiusMedium,
-                  ),
+                  borderRadius:
+                      BorderRadius.circular(AppDimensions.radiusMedium),
                 ),
-                child: const Icon(
-                  Icons.notifications_outlined,
-                  color: Colors.white,
-                  size: 24,
-                ),
+                child: const Icon(Icons.notifications_outlined,
+                    color: Colors.white, size: 24),
               ),
             ],
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tartibat/features/customer/widgets/cart/cart_total_bottom.dart';
 import '../widgets/cart/cart_app_bar.dart';
 import '../widgets/cart/cart_list.dart';
-import '../widgets/cart/cart_checkout.dart';
 import '../widgets/cart/cart_empty.dart';
 
 class CartScreen extends StatefulWidget {
@@ -56,7 +56,7 @@ class _CartScreenState extends State<CartScreen> {
         onClearAll: _cartItems.isNotEmpty ? _clearCart : null,
       ),
       body: _cartItems.isEmpty
-          ? const CartEmpty()
+          ? const CartEmptyClean()
           : Column(
               children: [
                 Expanded(
@@ -66,7 +66,7 @@ class _CartScreenState extends State<CartScreen> {
                     onQuantityChanged: _updateQuantity,
                   ),
                 ),
-                CartCheckout(totalPrice: _totalPrice, cartItems: const []),
+                CartTotalBottom(totalPrice: _totalPrice, onCheckout: () {}),
               ],
             ),
     );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
+import 'package:tartibat/features/customer/widgets/cart/cart_empty.dart';
+
 import '../widgets/cart/cart_app_bar.dart';
 import '../widgets/cart/cart_list.dart';
-import '../widgets/cart/cart_checkout.dart';
-import '../widgets/cart/cart_empty.dart';
+import '../widgets/cart/cart_total_bottom.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -25,10 +25,6 @@ class _CartScreenState extends State<CartScreen> {
     setState(() => _cartItems.removeAt(index));
   }
 
-  void _clearCart() {
-    setState(() => _cartItems.clear());
-  }
-
   void _updateQuantity(int index, int newQuantity) {
     setState(() => _cartItems[index]['quantity'] = newQuantity);
   }
@@ -36,13 +32,10 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: CartAppBar(
-        itemCount: _cartItems.length,
-        onClearAll: _cartItems.isNotEmpty ? _clearCart : null,
-      ),
+      backgroundColor: Colors.white,
+      appBar: CartAppBar(itemCount: _cartItems.length),
       body: _cartItems.isEmpty
-          ? const CartEmpty()
+          ? const CartEmptyClean()
           : Column(
               children: [
                 Expanded(
@@ -52,7 +45,7 @@ class _CartScreenState extends State<CartScreen> {
                     onQuantityChanged: _updateQuantity,
                   ),
                 ),
-                CartCheckout(totalPrice: _totalPrice, cartItems: _cartItems),
+                CartTotalBottom(totalPrice: _totalPrice, onCheckout: () {}),
               ],
             ),
     );

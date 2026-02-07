@@ -1,51 +1,47 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/utils/responsive.dart';
 
-class CartEmpty extends StatelessWidget {
-  const CartEmpty({super.key});
+class CartEmptyClean extends StatelessWidget {
+  const CartEmptyClean({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final r = context.responsive;
+
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(r.spacing(32)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(40),
+              width: r.responsive(mobile: 120, tablet: 150, desktop: 180),
+              height: r.responsive(mobile: 120, tablet: 150, desktop: 180),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: Colors.grey[100],
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.shopping_cart_outlined,
-                size: 100,
-                color: AppColors.primary.withOpacity(0.5),
+                size: r.responsive(mobile: 60, tablet: 75, desktop: 90),
+                color: Colors.black38,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: r.spacing(24)),
             Text(
               'empty_cart'.tr(context),
-              style: AppTextStyles.h3(context),
+              style: TextStyle(
+                fontSize: r.fontSize(22),
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: r.spacing(12)),
             Text(
               'empty_cart_message'.tr(context),
-              style: AppTextStyles.bodyMedium(context),
+              style: TextStyle(fontSize: r.fontSize(14), color: Colors.black54),
               textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              ),
-              child: Text('start_shopping'.tr(context)),
             ),
           ],
         ),
