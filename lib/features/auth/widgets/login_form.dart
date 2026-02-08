@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tartibat/features/customer/view/main_navigation_screen.dart';
+import 'package:tartibat/features/auth/view/forgot_password_screen.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/responsive.dart';
-import '../../../core/cache/auth_cache_helper.dart';
 import '../../../core/localization/app_localizations.dart';
-import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_text_field.dart';
-import '../../trader/view/trader_main_layout.dart';
+import '../../../core/widgets/custom_button.dart';
+import '../services/auth_service.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -28,6 +27,27 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
+  Future<void> _handleLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+    try {
+      await AuthService().login(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+      if (!mounted) return;
+      // Navigation handled in AuthService
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final r = context.responsive;
@@ -47,7 +67,7 @@ class _LoginFormState extends State<LoginForm> {
               return null;
             },
           ),
-          SizedBox(height: r.spacing(16)),
+          SizedBox(height: r.spacing(18)),
           CustomTextField(
             controller: _passwordController,
             label: 'password'.tr(context),
@@ -56,16 +76,22 @@ class _LoginFormState extends State<LoginForm> {
             validator: (value) =>
                 value?.isEmpty ?? true ? 'required_field'.tr(context) : null,
           ),
-          SizedBox(height: r.spacing(8)),
+          SizedBox(height: r.spacing(10)),
           Align(
-            alignment: Alignment.centerRight,
+            alignment: AlignmentDirectional.centerEnd,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ForgotPasswordScreen(),
+                ),
+              ),
               child: Text(
                 'forgot_password'.tr(context),
                 style: TextStyle(
                   color: AppColors.primary,
                   fontSize: r.fontSize(14),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -78,39 +104,6 @@ class _LoginFormState extends State<LoginForm> {
           ),
         ],
       ),
-    );
-  }
-
-  Future<void> _handleLogin() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 1));
-
-    // Simulate: Get user data from backend (including role)
-    // For demo: if email contains 'trader' → trader, else customer
-    final role =
-        _emailController.text.contains('trader') ? 'trader' : 'customer';
-
-    final authHelper = AuthCacheHelper();
-    await authHelper.saveAuthData(
-      token: 'token_${DateTime.now().millisecondsSinceEpoch}',
-      role: role,
-      userName: 'User',
-      userEmail: _emailController.text,
-      isTraderApproved: true, // Already logged in users are approved
-    );
-
-    if (!mounted) return;
-
-    final nextScreen = role == 'trader'
-        ? const TraderMainLayout()
-        : const CustomerMainLayout();
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (_) => nextScreen),
-      (route) => false,
     );
   }
 }

@@ -14,7 +14,7 @@ class AuthTabBar extends StatelessWidget {
     final r = context.responsive;
 
     return Container(
-      padding: EdgeInsets.all(r.spacing(4)),
+      padding: EdgeInsets.all(r.spacing(5)),
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: BorderRadius.circular(16),
@@ -27,7 +27,7 @@ class AuthTabBar extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: AppColors.primary.withOpacity(0.3),
-              blurRadius: 8,
+              blurRadius: 12,
               offset: const Offset(0, 4),
             ),
           ],
@@ -35,15 +35,16 @@ class AuthTabBar extends StatelessWidget {
         labelColor: Colors.white,
         unselectedLabelColor: AppColors.textSecondary,
         labelStyle: GoogleFonts.cairo(
-          fontSize: r.fontSize(16),
-          fontWeight: FontWeight.bold,
+          fontSize: r.fontSize(17),
+          fontWeight: FontWeight.w800,
         ),
         unselectedLabelStyle: GoogleFonts.cairo(
-          fontSize: r.fontSize(16),
+          fontSize: r.fontSize(17),
           fontWeight: FontWeight.w600,
         ),
         dividerColor: Colors.transparent,
         indicatorSize: TabBarIndicatorSize.tab,
+        splashFactory: NoSplash.splashFactory,
         tabs: [
           Tab(text: 'login'.tr(context)),
           Tab(text: 'register'.tr(context)),

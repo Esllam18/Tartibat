@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../auth/view/login_screen.dart';
+import 'package:tartibat/features/auth/view/auth_screen.dart';
 
 class ProfileLogoutButton extends StatelessWidget {
   const ProfileLogoutButton({super.key});
@@ -12,7 +12,7 @@ class ProfileLogoutButton extends StatelessWidget {
     if (context.mounted) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        MaterialPageRoute(builder: (_) => const AuthScreen()),
         (route) => false,
       );
     }

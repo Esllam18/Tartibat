@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../core/utils/responsive.dart';
 import '../../../core/localization/app_localizations.dart';
-import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_text_field.dart';
-import '../../role_selection/view/role_selection_screen.dart';
+import '../../../core/widgets/custom_button.dart';
+import '../services/auth_service.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -16,19 +16,42 @@ class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController(text: 'test');
   final _emailController = TextEditingController(text: 'test@gmail.com');
+  final _phoneController = TextEditingController(text: '0123456789');
   final _passwordController = TextEditingController(text: 'password123');
   final _confirmPasswordController = TextEditingController(text: 'password123');
-  final _phoneController = TextEditingController(text: '+1234567890');
   bool _isLoading = false;
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-    _phoneController.dispose();
     super.dispose();
+  }
+
+  Future<void> _handleRegister() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+    try {
+      await AuthService().register(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        phone: _phoneController.text.trim(),
+        password: _passwordController.text,
+      );
+      if (!mounted) return;
+      // Navigation handled in AuthService → RoleSelection
+    } catch (e) {
+      if (mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -94,7 +117,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 return null;
               },
             ),
-            SizedBox(height: r.spacing(24)),
+            SizedBox(height: r.spacing(28)),
             CustomButton(
               text: 'register'.tr(context),
               isLoading: _isLoading,
@@ -104,28 +127,5 @@ class _RegisterFormState extends State<RegisterForm> {
         ),
       ),
     );
-  }
-
-  Future<void> _handleRegister() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 1));
-
-    if (!mounted) return;
-
-    // Navigate to Role Selection Screen
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => RoleSelectionScreen(
-          userName: _nameController.text,
-          userEmail: _emailController.text,
-          userPhone: _phoneController.text,
-        ),
-      ),
-    );
-
-    setState(() => _isLoading = false);
   }
 }

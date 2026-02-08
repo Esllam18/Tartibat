@@ -56,13 +56,7 @@
   "about_app": "About",
   "logout": "Logout",
   
-  "login": "Login",
-  "register": "Register",
-  "email": "Email",
-  "password": "Password",
-  "confirm_password": "Confirm Password",
-  "full_name": "Full Name",
-  "phone": "Phone Number",
+
   "dont_have_account": "Don't have an account?",
   "already_have_account": "Already have an account?",
   
@@ -225,12 +219,9 @@
   "register_subtitle": "Create a new account to get started",
 
   "address": "Address",
-  "forgot_password": "Forgot Password?",
   "no_account": "Don't have an account?",
   "have_account": "Already have an account?",
-  "required_field": "This field is required",
-  "invalid_email": "Invalid email address",
-  "password_too_short": "Password is too short",
+
 
 
   "choose_account_type": "Choose Account Type",
@@ -238,7 +229,6 @@
 
   "trader_description": "Sell products and manage your store",
   "continue": "Continue",
-  "passwords_not_match": "Passwords do not match",
   "login_or_register": "Login or create a new account",
 
   "product_name": "Product Name",
@@ -365,7 +355,24 @@
   
   "skip": "Skip",
   "next": "Next",
-  "get_started": "Get Started"
+  "get_started": "Get Started",
+    "welcome_to_tartibat": "Welcome to Tartibat",
+  "auth_subtitle": "Iraq's first furniture marketplace",
+  "login": "Login",
+  "register": "Register",
+  "full_name": "Full Name",
+  "email": "Email Address",
+  "phone": "Phone Number",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "forgot_password": "Forgot Password?",
+  "forgot_password_subtitle": "Enter your email address and we'll send you a link to reset your password",
+  "send_reset_link": "Send Reset Link",
+  "password_reset_sent": "Password reset link sent to your email",
+  "required_field": "This field is required",
+  "invalid_email": "Please enter a valid email",
+  "password_too_short": "Password must be at least 6 characters",
+  "passwords_not_match": "Passwords do not match"
 
 
   
