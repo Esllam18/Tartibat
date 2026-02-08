@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tartibat/features/role_selection/view/role_selection_screen.dart';
 import '../../../core/utils/responsive.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../../../core/widgets/custom_text_field.dart';
 import '../../../core/widgets/custom_button.dart';
-import '../services/auth_service.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -35,19 +35,32 @@ class _RegisterFormState extends State<RegisterForm> {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
+
     try {
-      await AuthService().register(
-        name: _nameController.text.trim(),
-        email: _emailController.text.trim(),
-        phone: _phoneController.text.trim(),
-        password: _passwordController.text,
-      );
+      // Simulate API call
+      await Future.delayed(const Duration(seconds: 1));
+
       if (!mounted) return;
-      // Navigation handled in AuthService → RoleSelection
+
+      // Navigate to Role Selection on success
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RoleSelectionScreen(
+            userName: _nameController.text.trim(),
+            userEmail: _emailController.text.trim(),
+            userPhone: _phoneController.text.trim(),
+          ),
+        ),
+      );
     } catch (e) {
-      if (mounted) return;
+      if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);

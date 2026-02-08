@@ -1,195 +1,170 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tartibat/features/customer/data/bloc/favorites_cubit.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_text_styles.dart';
-import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../../core/localization/app_localizations.dart';
+import '../../data/models/favorite_model.dart';
 import '../../view/product_details_screen.dart';
 
 class FavoriteCard extends StatelessWidget {
-  final Map<String, dynamic> product;
-  final VoidCallback onRemove;
+  final FavoriteModel favorite;
 
-  const FavoriteCard({
-    super.key,
-    required this.product,
-    required this.onRemove,
-  });
+  const FavoriteCard({super.key, required this.favorite});
 
   @override
   Widget build(BuildContext context) {
     final r = context.responsive;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => ProductDetailsScreen(product: product)),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
-          boxShadow: const [
-            BoxShadow(
-              color: AppColors.shadowMedium,
-              blurRadius: 20,
-              offset: Offset(0, 6),
+    return Dismissible(
+      key: Key(favorite.id),
+      direction: DismissDirection.endToStart,
+      background: _buildDismissBackground(r),
+      onDismissed: (_) {
+        context.read<FavoritesCubit>().removeFavorite(favorite.id);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${favorite.getName(isArabic)} ${'removed_from_favorites'.tr(context)}',
             ),
-          ],
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      },
+      child: GestureDetector(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ProductDetailsScreen(
+              product: {
+                'name': favorite.getName(isArabic),
+                'price': favorite.price,
+                'image': favorite.imageUrl,
+                'location': favorite.merchant,
+              },
+            ),
+          ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 6,
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(AppDimensions.radiusXLarge),
-                    ),
-                    child: Image.network(
-                      product['image'] as String,
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        color: AppColors.background,
-                        child: Icon(
-                          Icons.image_not_supported,
-                          size:
-                              r.responsive(mobile: 50, tablet: 60, desktop: 70),
-                          color: AppColors.primaryLight,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: AppDimensions.paddingSmall,
-                    right: AppDimensions.paddingSmall,
-                    child: GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            title: Text('remove_favorite'.tr(context)),
-                            content:
-                                Text('remove_favorite_confirm'.tr(context)),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text('cancel'.tr(context)),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  onRemove();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'removed_from_favorites'.tr(context)),
-                                      backgroundColor: AppColors.error,
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
-                                    ),
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.error,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12)),
-                                ),
-                                child: Text('remove'.tr(context)),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(r.spacing(8)),
-                        decoration: const BoxDecoration(
-                          color: AppColors.surface,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                                color: AppColors.shadowLight, blurRadius: 8)
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.favorite,
-                          size: AppDimensions.iconSmall,
-                          color: AppColors.error,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+        child: Container(
+          height: 120,
+          margin: EdgeInsets.only(bottom: r.spacing(12)),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
               ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Padding(
-                padding: EdgeInsets.all(r.spacing(10)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product['name'] as String,
-                      style: AppTextStyles.bodyMedium(context)
-                          .copyWith(fontWeight: FontWeight.bold),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+            ],
+          ),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.horizontal(
+                  left: Radius.circular(18),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: favorite.imageUrl,
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.cover,
+                  memCacheHeight: 300,
+                  placeholder: (_, __) => Container(
+                    color: Colors.grey.shade100,
+                    child: const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
                     ),
-                    const SizedBox(height: 2),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.verified,
-                          size:
-                              r.responsive(mobile: 12, tablet: 14, desktop: 16),
-                          color: AppColors.success,
-                        ),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            product['location'] as String,
-                            style: AppTextStyles.caption(context),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
+                  ),
+                  errorWidget: (_, __, ___) => Container(
+                    color: Colors.grey.shade100,
+                    child: Icon(
+                      Icons.image_not_supported,
+                      color: Colors.grey.shade400,
                     ),
-                    const Spacer(),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: r.spacing(10),
-                        vertical: r.spacing(6),
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: AppColors.primaryGradient,
-                        borderRadius:
-                            BorderRadius.circular(AppDimensions.radiusMedium),
-                      ),
-                      child: Text(
-                        '${product['price']} ${'egp'.tr(context)}',
-                        style: AppTextStyles.bodySmall(context).copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textWhite,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(r.spacing(12)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        favorite.getName(isArabic),
+                        style: GoogleFonts.cairo(
+                          fontSize: r.fontSize(15),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        favorite.merchant,
+                        style: GoogleFonts.cairo(
+                          fontSize: r.fontSize(13),
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: r.spacing(12),
+                              vertical: r.spacing(6),
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: AppColors.primaryGradient,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              '\$${favorite.price.toStringAsFixed(0)}',
+                              style: GoogleFonts.cairo(
+                                fontSize: r.fontSize(14),
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildDismissBackground(Responsive r) {
+    return Container(
+      alignment: Alignment.centerRight,
+      padding: EdgeInsets.only(right: r.spacing(20)),
+      margin: EdgeInsets.only(bottom: r.spacing(12)),
+      decoration: BoxDecoration(
+        color: AppColors.error,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Icon(
+        Icons.delete_outline,
+        color: Colors.white,
+        size: r.responsive(mobile: 28, tablet: 32, desktop: 36),
       ),
     );
   }

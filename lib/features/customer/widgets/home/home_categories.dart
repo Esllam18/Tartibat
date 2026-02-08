@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_text_styles.dart';
-import '../../../../core/constants/app_dimensions.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/utils/responsive.dart';
 import '../../../../core/localization/app_localizations.dart';
+import '../../data/models/category_model.dart';
 
 class HomeCategories extends StatelessWidget {
   final String selectedCategory;
@@ -14,112 +14,78 @@ class HomeCategories extends StatelessWidget {
     required this.onCategorySelected,
   });
 
-  static const List<Map<String, dynamic>> _categories = [
-    {'id': 'all', 'key': 'all', 'icon': Icons.apps_rounded},
-    {'id': 'sofas', 'key': 'categories_sofa', 'icon': Icons.weekend_rounded},
-    {'id': 'chairs', 'key': 'categories_chairs', 'icon': Icons.chair_rounded},
-    {
-      'id': 'tables',
-      'key': 'categories_tables',
-      'icon': Icons.table_restaurant_rounded,
-    },
-    {'id': 'beds', 'key': 'categories_beds', 'icon': Icons.bed_rounded},
-    {
-      'id': 'storage',
-      'key': 'categories_storage',
-      'icon': Icons.inventory_2_rounded,
-    },
-    {'id': 'desks', 'key': 'categories_desks', 'icon': Icons.desk_rounded},
-    {'id': 'cabinets', 'key': 'categories_cabinets', 'icon': Icons.shelves},
-    {
-      'id': 'lighting',
-      'key': 'categories_lighting',
-      'icon': Icons.lightbulb_outline,
-    },
-    {
-      'id': 'carpets',
-      'key': 'categories_carpets',
-      'icon': Icons.crop_square_rounded,
-    },
-    {
-      'id': 'curtains',
-      'key': 'categories_curtains',
-      'icon': Icons.window_rounded,
-    },
-    {
-      'id': 'shelves',
-      'key': 'categories_shelves',
-      'icon': Icons.view_agenda_outlined,
-    },
-    {'id': 'outdoor', 'key': 'categories_outdoor', 'icon': Icons.yard_outlined},
-    {'id': 'kids', 'key': 'categories_kids', 'icon': Icons.child_care},
-    {'id': 'office', 'key': 'categories_office', 'icon': Icons.business_center},
-    {
-      'id': 'kitchen',
-      'key': 'categories_kitchen',
-      'icon': Icons.kitchen_outlined,
-    },
-    {
-      'id': 'bathroom',
-      'key': 'categories_bathroom',
-      'icon': Icons.bathroom_outlined,
-    },
-    {
-      'id': 'decor',
-      'key': 'categories_decor',
-      'icon': Icons.auto_awesome_outlined,
-    },
-    {'id': 'antique', 'key': 'categories_antique', 'icon': Icons.auto_fix_high},
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final r = context.responsive;
+
     return SizedBox(
-      height: 90,
+      height: r.responsive(mobile: 100, tablet: 110, desktop: 120),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: r.spacing(16)),
         physics: const BouncingScrollPhysics(),
-        itemCount: _categories.length,
+        itemCount: mainCategories.length,
         itemBuilder: (context, index) {
-          final category = _categories[index];
-          final isSelected = selectedCategory == category['id'];
+          final category = mainCategories[index];
+          final isSelected = selectedCategory == category.id;
 
           return GestureDetector(
-            onTap: () => onCategorySelected(category['id'] as String),
+            onTap: () => onCategorySelected(category.id),
             child: Container(
-              width: 75,
-              margin: const EdgeInsets.only(right: 10),
+              width: r.responsive(mobile: 75, tablet: 85, desktop: 95),
+              margin: EdgeInsets.only(right: r.spacing(10)),
+              padding: EdgeInsets.symmetric(
+                horizontal: r.spacing(8),
+                vertical: r.spacing(12),
+              ),
               decoration: BoxDecoration(
-                gradient: isSelected ? AppColors.primaryGradient : null,
-                color: isSelected ? null : AppColors.surface,
-                borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+                gradient: isSelected
+                    ? LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          category.color,
+                          category.color.withOpacity(0.7)
+                        ],
+                      )
+                    : null,
+                color: isSelected ? null : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isSelected ? category.color : Colors.grey.shade200,
+                  width: isSelected ? 2 : 1,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: isSelected
-                        ? AppColors.primary.withOpacity(0.3)
-                        : AppColors.shadowLight,
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
+                        ? category.color.withOpacity(0.25)
+                        : Colors.black.withOpacity(0.04),
+                    blurRadius: isSelected ? 10 : 6,
+                    offset: Offset(0, isSelected ? 4 : 2),
                   ),
                 ],
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
-                    category['icon'] as IconData,
-                    size: 26,
-                    color: isSelected ? Colors.white : AppColors.primary,
+                    category.icon,
+                    size: r.responsive(mobile: 26, tablet: 30, desktop: 34),
+                    color: isSelected ? Colors.white : category.color,
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: r.spacing(6)),
                   Text(
-                    (category['key'] as String).tr(context),
-                    style: AppTextStyles.caption(context).copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: isSelected ? Colors.white : AppColors.textPrimary,
+                    category.nameKey.tr(context),
+                    style: GoogleFonts.cairo(
+                      fontSize: r.fontSize(11),
+                      fontWeight: FontWeight.w700,
+                      color: isSelected ? Colors.white : Colors.grey.shade800,
+                      height: 1.1,
                     ),
                     textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

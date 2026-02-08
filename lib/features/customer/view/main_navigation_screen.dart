@@ -18,7 +18,7 @@ class _CustomerMainLayoutState extends State<CustomerMainLayout> {
   int _currentIndex = 0;
 
   static const List<Widget> _screens = [
-    CustomerHomeScreen(),
+    HomeScreen(),
     FavoritesScreen(),
     CartScreen(),
     ProfileScreen(),

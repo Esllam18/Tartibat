@@ -372,7 +372,39 @@
   "required_field": "This field is required",
   "invalid_email": "Please enter a valid email",
   "password_too_short": "Password must be at least 6 characters",
-  "passwords_not_match": "Passwords do not match"
+  "passwords_not_match": "Passwords do not match",
+    "category_all": "All",
+  "category_living_room": "Living Room",
+  "category_bedroom": "Bedroom",
+  "category_dining": "Dining",
+  "category_office": "Office",
+  "category_outdoor": "Outdoor",
+  "category_decor": "Decor",
+  "category_storage": "Storage",
+  
+
+  "explore_furniture": "Explore Furniture",
+  "search_furniture": "Search for furniture...",
+  "featured_products": "Featured Products",
+  "all_products": "All Products",
+  "recent_searches": "Recent Searches",
+  "no_recent_searches": "No recent searches",
+  "no_results_found": "No results found",
+  "try_different_keywords": "Try different keywords",
+  "no_products_found": "No products found",
+    "filter": "Filter",
+
+  "newest": "Newest",
+
+  "most_popular": "Most Popular",
+  "apply_filter": "Apply Filter",
+  "filter_applied": "Filter applied successfully",
+  "find_perfect_pieces": "Find your perfect pieces",
+  "start_searching": "Start searching for furniture",
+
+  "clear": "Clear",
+  "no_favorites_yet": "No Favorites Yet",
+  "start_adding_favorites": "Start adding your favorite products to see them here"
 
 
   

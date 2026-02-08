@@ -393,7 +393,42 @@
   "required_field": "هذا الحقل مطلوب",
   "invalid_email": "يرجى إدخال بريد إلكتروني صحيح",
   "password_too_short": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
-  "passwords_not_match": "كلمات المرور غير متطابقة"
+  "passwords_not_match": "كلمات المرور غير متطابقة",
+    "category_all": "الكل",
+  "category_living_room": "غرفة المعيشة",
+  "category_bedroom": "غرفة النوم",
+  "category_dining": "غرفة الطعام",
+  "category_office": "المكتب",
+  "category_outdoor": "خارجي",
+  "category_decor": "ديكورات",
+  "category_storage": "تخزين",
+  
+
+  "explore_furniture": "استكشف الأثاث",
+  "search_furniture": "ابحث عن الأثاث...",
+  "featured_products": "منتجات مميزة",
+  "all_products": "جميع المنتجات",
+  "recent_searches": "عمليات البحث الأخيرة",
+  "no_recent_searches": "لا توجد عمليات بحث سابقة",
+  "no_results_found": "لم يتم العثور على نتائج",
+  "try_different_keywords": "جرب كلمات مفتاحية مختلفة",
+  "no_products_found": "لم يتم العثور على منتجات",
+    "filter": "تصفية",
+
+  "newest": "الأحدث",
+
+  "most_popular": "الأكثر شعبية",
+  "apply_filter": "تطبيق التصفية",
+  "filter_applied": "تم تطبيق التصفية بنجاح",
+  "find_perfect_pieces": "اعثر على القطع المثالية",
+  "start_searching": "ابدأ البحث عن الأثاث",
+  
+
+  "clear": "مسح",
+  "no_favorites_yet": "لا توجد مفضلات بعد",
+  "start_adding_favorites": "ابدأ بإضافة منتجاتك المفضلة لرؤيتها هنا"
+
+
 
 
 

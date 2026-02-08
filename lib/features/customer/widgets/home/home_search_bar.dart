@@ -1,53 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:tartibat/features/customer/view/search_screen.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/responsive.dart';
 import '../../../../core/localization/app_localizations.dart';
 
 class HomeSearchBar extends StatelessWidget {
-  const HomeSearchBar({super.key});
+  final VoidCallback? onFilterTap;
+
+  const HomeSearchBar({super.key, this.onFilterTap});
 
   @override
   Widget build(BuildContext context) {
+    final r = context.responsive;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(
+        horizontal: r.spacing(16),
+        vertical: r.spacing(16),
+      ),
       child: Row(
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () => _showSearch(context),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SearchScreen()),
+              ),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: EdgeInsets.symmetric(
+                  horizontal: r.spacing(18),
+                  vertical: r.spacing(16),
+                ),
                 decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: Colors.grey.shade200),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.search, color: AppColors.textSecondary),
-                    const SizedBox(width: 12),
-                    Text(
-                      'search_products'.tr(context),
-                      style: const TextStyle(color: AppColors.textSecondary),
+                    Icon(
+                      Icons.search_rounded,
+                      color: AppColors.primary,
+                      size: r.responsive(mobile: 24, tablet: 26, desktop: 28),
+                    ),
+                    SizedBox(width: r.spacing(14)),
+                    Expanded(
+                      child: Text(
+                        'search_furniture'.tr(context),
+                        style: GoogleFonts.cairo(
+                          fontSize: r.fontSize(15),
+                          color: Colors.grey.shade500,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 12),
-          IconButton(
-            icon: const Icon(Icons.filter_list, color: AppColors.textSecondary),
-            onPressed: () => _showFilters(context),
-            style: IconButton.styleFrom(
-              backgroundColor: AppColors.background,
+          SizedBox(width: r.spacing(12)),
+          GestureDetector(
+            onTap: onFilterTap,
+            child: Container(
+              padding: EdgeInsets.all(r.spacing(16)),
+              decoration: BoxDecoration(
+                gradient: AppColors.primaryGradient,
+                borderRadius: BorderRadius.circular(18),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primary.withOpacity(0.25),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Icon(
+                Icons.tune_rounded,
+                color: Colors.white,
+                size: r.responsive(mobile: 24, tablet: 26, desktop: 28),
+              ),
             ),
           ),
         ],
       ),
     );
   }
-
-  void _showSearch(BuildContext context) {}
-
-  void _showFilters(BuildContext context) {}
 }

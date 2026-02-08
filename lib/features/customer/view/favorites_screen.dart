@@ -1,54 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tartibat/features/customer/data/bloc/favorites_cubit.dart';
+import 'package:tartibat/features/customer/data/bloc/favorites_state.dart';
+import 'package:tartibat/features/customer/widgets/favorites/favorites_empty.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/widgets/loading_state.dart';
-import '../widgets/favorites/favorites_app_bar.dart';
-import '../widgets/favorites/favorites_grid.dart';
-import '../widgets/favorites/favorites_empty.dart';
+import '../../../core/utils/responsive.dart';
 
-class FavoritesScreen extends StatefulWidget {
+import '../widgets/favorites/favorites_header.dart';
+import '../widgets/favorites/favorite_card.dart';
+
+class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
 
   @override
-  State<FavoritesScreen> createState() => _FavoritesScreenState();
-}
-
-class _FavoritesScreenState extends State<FavoritesScreen> {
-  bool _isLoading = true;
-  final List<Map<String, dynamic>> _favoriteItems = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadFavorites();
-  }
-
-  Future<void> _loadFavorites() async {
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() => _isLoading = false);
-  }
-
-  void _removeItem(int index) {
-    setState(() => _favoriteItems.removeAt(index));
-  }
-
-  void _clearAll() {
-    setState(() => _favoriteItems.clear());
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final r = context.responsive;
+
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: FavoritesAppBar(
-        itemCount: _favoriteItems.length,
-        onClearAll: _favoriteItems.isNotEmpty ? _clearAll : null,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const FavoritesHeader(),
+            Expanded(
+              child: BlocBuilder<FavoritesCubit, FavoritesState>(
+                builder: (context, state) {
+                  if (state is FavoritesLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  if (state is FavoritesLoaded) {
+                    if (state.isEmpty) {
+                      return const FavoritesEmptyState();
+                    }
+
+                    return ListView.builder(
+                      padding: EdgeInsets.all(r.spacing(16)),
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: state.favorites.length,
+                      itemBuilder: (context, index) {
+                        return FavoriteCard(
+                          favorite: state.favorites[index],
+                        );
+                      },
+                    );
+                  }
+
+                  if (state is FavoritesError) {
+                    return Center(
+                      child: Text('Error: ${state.message}'),
+                    );
+                  }
+
+                  return const SizedBox();
+                },
+              ),
+            ),
+          ],
+        ),
       ),
-      body: _isLoading
-          ? const LoadingState()
-          : _favoriteItems.isEmpty
-              ? const FavoritesEmpty()
-              : FavoritesGrid(items: _favoriteItems, onRemove: _removeItem),
     );
   }
 }
