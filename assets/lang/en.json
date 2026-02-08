@@ -168,15 +168,7 @@
 "remove_favorite_confirm": "Do you want to remove this product from favorites?",
 "removed_from_favorites": "Removed from favorites",
 "remove": "Remove",
-  "onboarding_title_1": "Discover Premium Furniture",
-  "onboarding_desc_1": "Browse a wide range of elegant and modern furniture for your home",
-  "onboarding_title_2": "Shop with Confidence",
-  "onboarding_desc_2": "Secure payment and fast delivery to your doorstep",
-  "onboarding_title_3": "Your Style, Your Space",
-  "onboarding_desc_3": "Make your home reflect your personality with distinctive furniture",
-  "get_started": "Get Started",
-  "next": "Next",
-  "skip": "Skip",
+
   "select_your_role": "Select Your Role",
   "role_selection_subtitle": "How would you like to use the app?",
   "customer": "Customer",
@@ -361,7 +353,19 @@
   "pending_traders": "Pending Traders",
   "pending_products": "Pending Products",
   "recent_activity": "Recent Activity",
-  "splash_tagline": "Your Ultimate Furniture Marketplace"
+  "splash_tagline": "Your Ultimate Furniture Marketplace",
+    "onboarding_title_1": "Discover Your Dream Furniture",
+  "onboarding_desc_1": "Browse thousands of quality furniture pieces from trusted merchants across Iraq, all in one place",
+  
+  "onboarding_title_2": "Shop from Multiple Vendors",
+  "onboarding_desc_2": "Connect with verified furniture merchants, compare prices, and find the perfect pieces for your home",
+  
+  "onboarding_title_3": "Secure & Easy Payments",
+  "onboarding_desc_3": "Pay safely with cards or cash on delivery. Track your orders and get your furniture delivered to your door",
+  
+  "skip": "Skip",
+  "next": "Next",
+  "get_started": "Get Started"
 
   
 

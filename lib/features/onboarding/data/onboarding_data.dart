@@ -1,5 +1,8 @@
 class OnboardingPageData {
-  final String titleKey, descriptionKey, imageUrl;
+  final String titleKey;
+  final String descriptionKey;
+  final String imageUrl;
+
   const OnboardingPageData({
     required this.titleKey,
     required this.descriptionKey,
@@ -7,23 +10,23 @@ class OnboardingPageData {
   });
 }
 
-const onboardingPages = <OnboardingPageData>[
+const onboardingPages = [
   OnboardingPageData(
     titleKey: 'onboarding_title_1',
     descriptionKey: 'onboarding_desc_1',
     imageUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHjqlV6jEs_4naX1mPl2qhAwEiJfGqv1JgNA&s',
+        'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop',
   ),
   OnboardingPageData(
     titleKey: 'onboarding_title_2',
     descriptionKey: 'onboarding_desc_2',
     imageUrl:
-        'https://png.pngtree.com/thumb_back/fh260/background/20230525/pngtree-contemporary-living-room-with-modern-furniture-and-wooden-decor-3d-rendering-image_2618715.jpg',
+        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1200&auto=format&fit=crop',
   ),
   OnboardingPageData(
     titleKey: 'onboarding_title_3',
     descriptionKey: 'onboarding_desc_3',
     imageUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaZIQRstQtL94C2xiZukeIoOCvp7bi9oFmww&s',
+        'https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1200&auto=format&fit=crop',
   ),
 ];

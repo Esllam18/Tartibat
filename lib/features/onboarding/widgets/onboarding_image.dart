@@ -4,44 +4,62 @@ import '../../../core/utils/responsive.dart';
 
 class OnboardingImage extends StatelessWidget {
   final String imageUrl;
+
   const OnboardingImage({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
     final r = context.responsive;
+
     return Container(
-      height: r.responsive(mobile: 260, tablet: 360, desktop: 440),
+      height: r.responsive(mobile: 280, tablet: 380, desktop: 460),
       width: double.infinity,
-      decoration:
-          BoxDecoration(borderRadius: BorderRadius.circular(24), boxShadow: [
-        BoxShadow(
-            color: Colors.black.withOpacity(.18),
-            blurRadius: 24,
-            offset: const Offset(0, 14)),
-      ]),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Stack(fit: StackFit.expand, children: [
-          CachedNetworkImage(
-            imageUrl: imageUrl,
-            fit: BoxFit.cover,
-            memCacheHeight: 900,
-            placeholder: (_, __) => const ColoredBox(color: Colors.black12),
-            errorWidget: (_, __, ___) => const ColoredBox(
-              color: Colors.black12,
-              child: Center(child: Icon(Icons.image_not_supported_outlined)),
-            ),
+      margin: EdgeInsets.symmetric(horizontal: r.spacing(8)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 30,
+            offset: const Offset(0, 12),
           ),
-          const DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [Color(0x66000000), Color(0x00000000)],
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(28),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            CachedNetworkImage(
+              imageUrl: imageUrl,
+              fit: BoxFit.cover,
+              memCacheHeight: 1000,
+              placeholder: (_, __) => Container(
+                color: Colors.white.withOpacity(0.1),
+                child: const Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                ),
+              ),
+              errorWidget: (_, __, ___) => Container(
+                color: Colors.white.withOpacity(0.1),
+                child: const Icon(Icons.image_outlined,
+                    color: Colors.white, size: 48),
               ),
             ),
-          ),
-        ]),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.3),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

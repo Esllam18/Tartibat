@@ -19,7 +19,11 @@ class RoleSelectionCards extends StatelessWidget {
             titleKey: 'customer',
             descriptionKey: 'customer_description',
             gradient: const LinearGradient(
-                colors: [Color(0xFF2196F3), Color(0xFF1976D2)]),
+              colors: [
+                Color.fromARGB(255, 54, 61, 101),
+                Color.fromARGB(255, 87, 88, 103)
+              ],
+            ),
             isSelected: selectedRole == 'customer',
             onTap: () => onRoleSelect('customer'),
           ),
@@ -30,7 +34,11 @@ class RoleSelectionCards extends StatelessWidget {
             titleKey: 'trader',
             descriptionKey: 'trader_description',
             gradient: const LinearGradient(
-                colors: [Color(0xFF9C27B0), Color(0xFF7B1FA2)]),
+              colors: [
+                Color.fromARGB(255, 42, 39, 38),
+                Color.fromARGB(255, 121, 110, 96)
+              ],
+            ),
             isSelected: selectedRole == 'trader',
             onTap: () => onRoleSelect('trader'),
           ),
