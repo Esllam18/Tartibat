@@ -1,69 +1,112 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
-import 'role_card_content.dart';
+import '../../../core/localization/app_localizations.dart';
+import '../../../core/utils/responsive.dart';
 
 class RoleCard extends StatelessWidget {
-  final String role;
+  final String role, titleKey, descriptionKey;
   final IconData icon;
-  final String titleKey, descriptionKey;
   final Gradient gradient;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const RoleCard(
-      {super.key,
-      required this.role,
-      required this.icon,
-      required this.titleKey,
-      required this.descriptionKey,
-      required this.gradient,
-      required this.isSelected,
-      required this.onTap});
+  const RoleCard({
+    super.key,
+    required this.role,
+    required this.icon,
+    required this.titleKey,
+    required this.descriptionKey,
+    required this.gradient,
+    required this.isSelected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final r = context.responsive;
+
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 350),
         curve: Curves.easeInOut,
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(r.spacing(22)),
         decoration: BoxDecoration(
           gradient: isSelected ? gradient : null,
-          color: isSelected ? null : Colors.white.withOpacity(0.15),
-          borderRadius: BorderRadius.circular(24),
+          color: isSelected ? null : Colors.white.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(26),
           border: Border.all(
-              color: isSelected ? Colors.white : Colors.white30,
-              width: isSelected ? 3 : 2),
+            color: isSelected ? Colors.white : Colors.white.withOpacity(0.25),
+            width: isSelected ? 3 : 2,
+          ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                      color: Colors.white.withOpacity(0.4),
-                      blurRadius: 25,
-                      spreadRadius: 3)
+                    color: Colors.white.withOpacity(0.35),
+                    blurRadius: 28,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 6),
+                  ),
                 ]
               : [],
         ),
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(14),
+              padding: EdgeInsets.all(r.spacing(16)),
               decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(isSelected ? 0.25 : 0.1),
-                  borderRadius: BorderRadius.circular(16)),
-              child: Icon(icon, size: 36, color: Colors.white),
+                color: Colors.white.withOpacity(isSelected ? 0.25 : 0.08),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Icon(
+                icon,
+                size: r.responsive(mobile: 38, tablet: 44, desktop: 50),
+                color: Colors.white,
+              ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: r.spacing(18)),
             Expanded(
-                child: RoleCardContent(
-                    titleKey: titleKey, descriptionKey: descriptionKey)),
-            if (isSelected)
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    titleKey.tr(context),
+                    style: GoogleFonts.cairo(
+                      fontSize: r.fontSize(21),
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      height: 1.2,
+                    ),
+                  ),
+                  SizedBox(height: r.spacing(6)),
+                  Text(
+                    descriptionKey.tr(context),
+                    style: GoogleFonts.cairo(
+                      fontSize: r.fontSize(14),
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white.withOpacity(0.8),
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (isSelected) ...[
+              SizedBox(width: r.spacing(12)),
               Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: const BoxDecoration(
-                      color: Colors.white, shape: BoxShape.circle),
-                  child: const Icon(Icons.check_rounded,
-                      color: AppColors.primary, size: 20)),
+                padding: EdgeInsets.all(r.spacing(7)),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.check_rounded,
+                  color: AppColors.primary,
+                  size: r.responsive(mobile: 20, tablet: 24, desktop: 26),
+                ),
+              ),
+            ],
           ],
         ),
       ),

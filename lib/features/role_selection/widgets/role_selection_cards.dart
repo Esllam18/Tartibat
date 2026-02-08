@@ -1,47 +1,43 @@
 import 'package:flutter/material.dart';
+import '../../../core/utils/responsive.dart';
+import '../data/role_data.dart';
 import 'role_card.dart';
 
 class RoleSelectionCards extends StatelessWidget {
   final String? selectedRole;
   final ValueChanged<String> onRoleSelect;
-  const RoleSelectionCards(
-      {super.key, required this.selectedRole, required this.onRoleSelect});
+
+  const RoleSelectionCards({
+    super.key,
+    required this.selectedRole,
+    required this.onRoleSelect,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final r = context.responsive;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: r.spacing(20)),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          RoleCard(
-            role: 'customer',
-            icon: Icons.shopping_bag_rounded,
-            titleKey: 'customer',
-            descriptionKey: 'customer_description',
-            gradient: const LinearGradient(
-              colors: [
-                Color.fromARGB(255, 54, 61, 101),
-                Color.fromARGB(255, 87, 88, 103)
-              ],
+          for (int i = 0; i < roleOptions.length; i++) ...[
+            AnimatedOpacity(
+              opacity: 1.0,
+              duration: Duration(milliseconds: 600 + (i * 150)),
+              child: RoleCard(
+                role: roleOptions[i].id,
+                icon: roleOptions[i].icon,
+                titleKey: roleOptions[i].titleKey,
+                descriptionKey: roleOptions[i].descriptionKey,
+                gradient: roleOptions[i].gradient,
+                isSelected: selectedRole == roleOptions[i].id,
+                onTap: () => onRoleSelect(roleOptions[i].id),
+              ),
             ),
-            isSelected: selectedRole == 'customer',
-            onTap: () => onRoleSelect('customer'),
-          ),
-          const SizedBox(height: 16),
-          RoleCard(
-            role: 'trader',
-            icon: Icons.store_rounded,
-            titleKey: 'trader',
-            descriptionKey: 'trader_description',
-            gradient: const LinearGradient(
-              colors: [
-                Color.fromARGB(255, 42, 39, 38),
-                Color.fromARGB(255, 121, 110, 96)
-              ],
-            ),
-            isSelected: selectedRole == 'trader',
-            onTap: () => onRoleSelect('trader'),
-          ),
+            if (i < roleOptions.length - 1) SizedBox(height: r.spacing(18)),
+          ],
         ],
       ),
     );
