@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tartibat/features/customer/data/bloc/cart_cubit.dart';
+import 'package:tartibat/features/customer/data/bloc/checkout_cubit.dart';
 import 'package:tartibat/features/customer/data/bloc/favorites_cubit.dart';
 import 'core/localization/app_localizations.dart';
 import 'core/localization/locale_cubit.dart';
 import 'features/customer/data/services/favorites_service.dart';
 import 'features/customer/data/services/cart_service.dart';
+import 'features/customer/data/services/checkout_service.dart';
 import 'features/splash/view/splash_screen.dart';
 
 void main() async {
@@ -15,21 +17,25 @@ void main() async {
   // Initialize services
   final favoritesService = await FavoritesService.getInstance();
   final cartService = await CartService.getInstance();
+  final checkoutService = await CheckoutService.getInstance();
 
   runApp(MyApp(
     favoritesService: favoritesService,
     cartService: cartService,
+    checkoutService: checkoutService,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final FavoritesService favoritesService;
   final CartService cartService;
+  final CheckoutService checkoutService;
 
   const MyApp({
     super.key,
     required this.favoritesService,
     required this.cartService,
+    required this.checkoutService,
   });
 
   @override
@@ -44,6 +50,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => CartCubit(cartService),
+        ),
+        BlocProvider(
+          create: (_) => CheckoutCubit(checkoutService),
         ),
       ],
       child: BlocBuilder<LocaleCubit, ChangeLocaleState>(

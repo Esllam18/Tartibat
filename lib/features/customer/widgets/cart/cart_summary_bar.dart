@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tartibat/features/customer/data/bloc/cart_cubit.dart';
 import 'package:tartibat/features/customer/data/bloc/cart_state.dart';
+import 'package:tartibat/features/customer/data/bloc/checkout_cubit.dart';
+import 'package:tartibat/features/customer/view/checkout_screen.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../../core/localization/app_localizations.dart';
@@ -60,11 +62,18 @@ class CartSummaryBar extends StatelessWidget {
                   height: r.responsive(mobile: 56, tablet: 60, desktop: 64),
                   child: ElevatedButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content:
-                              Text('checkout_feature_coming_soon'.tr(context)),
-                          backgroundColor: AppColors.primary,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => MultiBlocProvider(
+                            providers: [
+                              BlocProvider.value(
+                                  value: context.read<CartCubit>()),
+                              BlocProvider.value(
+                                  value: context.read<CheckoutCubit>()),
+                            ],
+                            child: const CheckoutScreen(),
+                          ),
                         ),
                       );
                     },

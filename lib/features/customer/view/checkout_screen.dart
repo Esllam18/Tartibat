@@ -1,62 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tartibat/features/customer/data/bloc/cart_cubit.dart';
+import 'package:tartibat/features/customer/data/bloc/cart_state.dart';
+import 'package:tartibat/features/customer/data/bloc/checkout_cubit.dart';
+import 'package:tartibat/features/customer/data/bloc/checkout_state.dart';
 import '../../../core/constants/app_colors.dart';
-import '../widgets/checkout/checkout_app_bar.dart';
-import '../widgets/checkout/delivery_address_section.dart';
-import '../widgets/checkout/payment_method_section.dart';
-import '../widgets/checkout/order_summary_section.dart';
-import '../widgets/checkout/checkout_bottom_bar.dart';
+import '../../../core/utils/responsive.dart';
+import '../widgets/checkout/checkout_header.dart';
+import '../widgets/checkout/checkout_order_summary.dart';
+import '../widgets/checkout/checkout_address_section.dart';
+import '../widgets/checkout/checkout_payment_section.dart';
+import '../widgets/checkout/checkout_total_bar.dart';
+import '../widgets/checkout/order_success_dialog.dart';
 
-class CheckoutScreen extends StatefulWidget {
-  final List<Map<String, dynamic>> cartItems;
-
-  const CheckoutScreen({super.key, required this.cartItems});
-
-  @override
-  State<CheckoutScreen> createState() => _CheckoutScreenState();
-}
-
-class _CheckoutScreenState extends State<CheckoutScreen> {
-  String _selectedAddress = '';
-
-  int get _subtotal => widget.cartItems.fold(
-        0,
-        (sum, item) =>
-            sum + ((item['price'] as int) * (item['quantity'] as int)),
-      );
-
-  int get _deliveryFee => 5000; // Fixed delivery fee in IQD
-
-  int get _total => _subtotal + _deliveryFee;
+class CheckoutScreen extends StatelessWidget {
+  const CheckoutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: const CheckoutAppBar(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            DeliveryAddressSection(
-              selectedAddress: _selectedAddress,
-              onAddressChanged: (address) {
-                setState(() => _selectedAddress = address);
-              },
+    final r = context.responsive;
+
+    return BlocListener<CheckoutCubit, CheckoutState>(
+      listener: (context, state) {
+        if (state is OrderPlaced) {
+          context.read<CartCubit>().clearCart();
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => OrderSuccessDialog(order: state.order),
+          );
+        } else if (state is CheckoutError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.error,
             ),
-            const SizedBox(height: 16),
-            const PaymentMethodSection(),
-            const SizedBox(height: 16),
-            OrderSummarySection(
-              items: widget.cartItems,
-              subtotal: _subtotal,
-              deliveryFee: _deliveryFee,
-              total: _total,
-            ),
-            const SizedBox(height: 100),
-          ],
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: Column(
+            children: [
+              const CheckoutHeader(),
+              Expanded(
+                child: BlocBuilder<CartCubit, CartState>(
+                  builder: (context, cartState) {
+                    if (cartState is! CartLoaded || cartState.isEmpty) {
+                      return Center(
+                        child: Text('Cart is empty'),
+                      );
+                    }
+
+                    return ListView(
+                      padding: EdgeInsets.all(r.spacing(16)),
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        const CheckoutOrderSummary(),
+                        SizedBox(height: r.spacing(16)),
+                        const CheckoutAddressSection(),
+                        SizedBox(height: r.spacing(16)),
+                        const CheckoutPaymentSection(),
+                        SizedBox(height: r.spacing(100)),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              const CheckoutTotalBar(),
+            ],
+          ),
         ),
       ),
-      bottomNavigationBar: CheckoutBottomBar(totalPrice: _total),
     );
   }
 }
