@@ -492,7 +492,77 @@
   "cannot_open_email": "Cannot open email app",
   "cannot_open_whatsapp": "Cannot open WhatsApp",
   "cannot_open_website": "Cannot open website",
-  "support_request": "Support Request"
+  "support_request": "Support Request",
+  "manage_your_store": "Manage your store efficiently",
+  "statistics": "Statistics",
+  "all_time": "All time",
+
+  "manage_inventory": "Manage Inventory",
+  "inventory_coming_soon": "Inventory management coming soon!",
+
+  "no_products_yet": "No Products Yet",
+  "add_your_first_product": "Add your first product to start selling",
+  "orders_management": "Orders Management",
+  "processing": "Processing",
+  "no_orders_found": "No Orders Found",
+  "no_orders_in_category": "No orders in this category",
+  "update_order_status": "Update Order Status",
+  "add_new_product": "Add New Product",
+  "edit_product": "Edit Product",
+  "product_name_english": "Product Name (English)",
+  "product_name_arabic": "Product Name (Arabic)",
+
+  "image_url": "Image URL",
+  "product_available": "Product Available",
+  "update_product": "Update Product",
+  "please_enter_product_name": "Please enter product name",
+  "please_enter_product_name_ar": "Please enter product name in Arabic",
+  "please_enter_price": "Please enter price",
+  "invalid_price": "Invalid price",
+  "please_enter_category": "Please enter category",
+  "please_enter_image_url": "Please enter image URL",
+  "product_updated_successfully": "Product updated successfully",
+  "delete_product": "Delete Product",
+  "delete_product_confirm": "Are you sure you want to delete this product?",
+  "inactive": "Inactive",
+    "search_hint": "Try searching for 'sofa', 'table', or 'chair'",
+      "store_performance": "Store Performance",
+  "products_sold": "Products Sold",
+  "orders_handled": "Orders Handled",
+  "edit_store_profile": "Edit Store Profile",
+  "sales_analytics": "Sales Analytics",
+  "store_settings": "Store Settings",
+  "analytics_coming_soon": "Analytics coming soon!",
+  "settings_coming_soon": "Settings coming soon!",
+  "store_name_english": "Store Name (English)",
+  "store_name_arabic": "Store Name (Arabic)",
+  "owner_name": "Owner Name",
+  "please_enter_store_name": "Please enter store name",
+  "please_enter_store_name_ar": "Please enter store name in Arabic",
+  "please_enter_owner_name": "Please enter owner name",
+    "tap_to_add_image": "Tap to add product image",
+  "choose_image_source": "Choose Image Source",
+  "gallery": "Gallery",
+  "camera": "Camera",
+  "please_add_product_image": "Please add a product image",
+  "order_status_updated": "Order status updated successfully",
+  "current": "Current",
+
+  "change_address": "Change Address",
+  "select_address": "Select Address",
+  "cart_is_empty": "Your cart is empty",
+    "add_address": "Add Address",
+  "edit_address": "Edit Address",
+
+  "floor": "Floor",
+
+  "update_address": "Update Address",
+  "address_saved": "Address saved successfully",
+  "address_updated": "Address updated successfully"
+
+
+
+
 
   
 

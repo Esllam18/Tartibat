@@ -7,26 +7,40 @@ import 'package:tartibat/features/customer/data/bloc/favorites_cubit.dart';
 import 'package:tartibat/features/customer/data/bloc/profile_cubit.dart';
 import 'core/localization/app_localizations.dart';
 import 'core/localization/locale_cubit.dart';
+import 'features/merchant/bloc/merchant_products_cubit.dart';
+import 'features/merchant/bloc/merchant_orders_cubit.dart';
+import 'features/merchant/bloc/merchant_profile_cubit.dart';
 import 'features/customer/data/services/favorites_service.dart';
 import 'features/customer/data/services/cart_service.dart';
 import 'features/customer/data/services/checkout_service.dart';
 import 'features/customer/data/services/profile_service.dart';
+import 'features/merchant/data/services/merchant_products_service.dart';
+import 'features/merchant/data/services/merchant_orders_service.dart';
+import 'features/merchant/data/services/merchant_profile_service.dart';
 import 'features/splash/view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize services
+  // Initialize Customer services
   final favoritesService = await FavoritesService.getInstance();
   final cartService = await CartService.getInstance();
   final checkoutService = await CheckoutService.getInstance();
   final profileService = await ProfileService.getInstance();
+
+  // Initialize Merchant services
+  final merchantProductsService = await MerchantProductsService.getInstance();
+  final merchantOrdersService = await MerchantOrdersService.getInstance();
+  final merchantProfileService = await MerchantProfileService.getInstance();
 
   runApp(MyApp(
     favoritesService: favoritesService,
     cartService: cartService,
     checkoutService: checkoutService,
     profileService: profileService,
+    merchantProductsService: merchantProductsService,
+    merchantOrdersService: merchantOrdersService,
+    merchantProfileService: merchantProfileService,
   ));
 }
 
@@ -35,6 +49,9 @@ class MyApp extends StatelessWidget {
   final CartService cartService;
   final CheckoutService checkoutService;
   final ProfileService profileService;
+  final MerchantProductsService merchantProductsService;
+  final MerchantOrdersService merchantOrdersService;
+  final MerchantProfileService merchantProfileService;
 
   const MyApp({
     super.key,
@@ -42,27 +59,29 @@ class MyApp extends StatelessWidget {
     required this.cartService,
     required this.checkoutService,
     required this.profileService,
+    required this.merchantProductsService,
+    required this.merchantOrdersService,
+    required this.merchantProfileService,
   });
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => LocaleCubit()..getSavedLanguage()),
+
+        // Customer Cubits
+        BlocProvider(create: (_) => FavoritesCubit(favoritesService)),
+        BlocProvider(create: (_) => CartCubit(cartService)),
+        BlocProvider(create: (_) => CheckoutCubit(checkoutService)),
+        BlocProvider(create: (_) => ProfileCubit(profileService)),
+
+        // Merchant Cubits
         BlocProvider(
-          create: (context) => LocaleCubit()..getSavedLanguage(),
-        ),
+            create: (_) => MerchantProductsCubit(merchantProductsService)),
+        BlocProvider(create: (_) => MerchantOrdersCubit(merchantOrdersService)),
         BlocProvider(
-          create: (_) => FavoritesCubit(favoritesService),
-        ),
-        BlocProvider(
-          create: (_) => CartCubit(cartService),
-        ),
-        BlocProvider(
-          create: (_) => CheckoutCubit(checkoutService),
-        ),
-        BlocProvider(
-          create: (_) => ProfileCubit(profileService),
-        ),
+            create: (_) => MerchantProfileCubit(merchantProfileService)),
       ],
       child: BlocBuilder<LocaleCubit, ChangeLocaleState>(
         builder: (context, state) {
@@ -70,10 +89,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'ترتيبات',
             locale: state.locale,
-            supportedLocales: const [
-              Locale('ar'),
-              Locale('en'),
-            ],
+            supportedLocales: const [Locale('ar'), Locale('en')],
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,

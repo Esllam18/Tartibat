@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tartibat/features/merchant/view/merchant_main_layout.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/cache/auth_cache_helper.dart';
 import '../../../core/utils/responsive.dart';
 import '../../customer/view/main_navigation_screen.dart';
-import '../../trader/view/trader_main_layout.dart';
 import '../widgets/role_selection_header.dart';
 import '../widgets/role_selection_cards.dart';
 import '../widgets/continue_button.dart';
@@ -46,7 +46,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
       context,
       MaterialPageRoute(
         builder: (_) => _selectedRole == 'trader'
-            ? const TraderMainLayout()
+            ? const MerchantMainLayout()
             : const CustomerMainLayout(),
       ),
       (_) => false,

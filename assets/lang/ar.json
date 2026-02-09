@@ -513,7 +513,73 @@
   "cannot_open_email": "لا يمكن فتح تطبيق البريد",
   "cannot_open_whatsapp": "لا يمكن فتح واتساب",
   "cannot_open_website": "لا يمكن فتح الموقع",
-  "support_request": "طلب دعم"
+  "support_request": "طلب دعم",
+  "manage_your_store": "أدر متجرك بكفاءة",
+  "statistics": "الإحصائيات",
+  "all_time": "كل الأوقات",
+
+  "manage_inventory": "إدارة المخزون",
+  "inventory_coming_soon": "إدارة المخزون قريباً!",
+
+  "no_products_yet": "لا توجد منتجات بعد",
+  "add_your_first_product": "أضف منتجك الأول لبدء البيع",
+  "orders_management": "إدارة الطلبات",
+  "processing": "قيد المعالجة",
+  "no_orders_found": "لا توجد طلبات",
+  "no_orders_in_category": "لا توجد طلبات في هذا القسم",
+  "update_order_status": "تحديث حالة الطلب",
+  "add_new_product": "إضافة منتج جديد",
+  "product_name_english": "اسم المنتج (إنجليزي)",
+  "product_name_arabic": "اسم المنتج (عربي)",
+
+  "image_url": "رابط الصورة",
+  "product_available": "المنتج متاح",
+  "update_product": "تحديث المنتج",
+  "please_enter_product_name": "الرجاء إدخال اسم المنتج",
+  "please_enter_product_name_ar": "الرجاء إدخال اسم المنتج بالعربية",
+  "please_enter_price": "الرجاء إدخال السعر",
+  "invalid_price": "سعر غير صالح",
+  "please_enter_category": "الرجاء إدخال الفئة",
+  "please_enter_image_url": "الرجاء إدخال رابط الصورة",
+
+  "delete_product_confirm": "هل أنت متأكد من حذف هذا المنتج؟",
+  "inactive": "غير نشط",
+    "search_hint": "جرب البحث عن 'أريكة'، 'طاولة'، أو 'كرسي'",
+      "store_performance": "أداء المتجر",
+  "products_sold": "المنتجات المباعة",
+  "orders_handled": "الطلبات المعالجة",
+  "edit_store_profile": "تعديل ملف المتجر",
+  "sales_analytics": "تحليلات المبيعات",
+  "store_settings": "إعدادات المتجر",
+  "analytics_coming_soon": "التحليلات قريباً!",
+  "settings_coming_soon": "الإعدادات قريباً!",
+  "store_name_english": "اسم المتجر (إنجليزي)",
+  "store_name_arabic": "اسم المتجر (عربي)",
+  "owner_name": "اسم المالك",
+  "please_enter_store_name": "الرجاء إدخال اسم المتجر",
+  "please_enter_store_name_ar": "الرجاء إدخال اسم المتجر بالعربية",
+  "please_enter_owner_name": "الرجاء إدخال اسم المالك",
+  
+  "tap_to_add_image": "اضغط لإضافة صورة المنتج",
+  "choose_image_source": "اختر مصدر الصورة",
+  "gallery": "المعرض",
+  "camera": "الكاميرا",
+  "please_add_product_image": "الرجاء إضافة صورة للمنتج",
+  "order_status_updated": "تم تحديث حالة الطلب بنجاح",
+  "current": "الحالي",
+
+  "change_address": "تغيير العنوان",
+  "select_address": "اختر العنوان",
+  "cart_is_empty": "السلة فارغة",
+    "add_address": "إضافة عنوان",
+  "edit_address": "تعديل العنوان",
+
+  "floor": "الطابق",
+
+  "update_address": "تحديث العنوان",
+  "address_saved": "تم حفظ العنوان بنجاح",
+  "address_updated": "تم تحديث العنوان بنجاح"
+
 
 
 
