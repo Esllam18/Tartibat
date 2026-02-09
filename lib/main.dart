@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tartibat/core/services/seed_data_service.dart';
 import 'package:tartibat/features/customer/data/bloc/cart_cubit.dart';
 import 'package:tartibat/features/customer/data/bloc/checkout_cubit.dart';
 import 'package:tartibat/features/customer/data/bloc/favorites_cubit.dart';
@@ -22,6 +23,7 @@ import 'features/splash/view/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await SeedDataService.initialize();
   // Initialize Customer services
   final favoritesService = await FavoritesService.getInstance();
   final cartService = await CartService.getInstance();

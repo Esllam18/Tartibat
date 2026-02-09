@@ -95,7 +95,6 @@
   "share_product": "Share Product",
   
   "loading": "Loading...",
-  "error": "Error occurred",
   "success": "Success",
   "coming_soon": "Coming Soon",
   
@@ -258,7 +257,6 @@
 "category_name": "Category Name",
 "add": "Add",
 "category_added": "Category Added",
-"add_at_least_one_image": "Add at least one image",
 "edit_order": "Edit Order",
 "order_details": "Order Details",
 "update_status": "Update Status",
@@ -544,7 +542,6 @@
   "choose_image_source": "Choose Image Source",
   "gallery": "Gallery",
   "camera": "Camera",
-  "please_add_product_image": "Please add a product image",
   "order_status_updated": "Order status updated successfully",
   "current": "Current",
 
@@ -558,7 +555,27 @@
 
   "update_address": "Update Address",
   "address_saved": "Address saved successfully",
-  "address_updated": "Address updated successfully"
+  "address_updated": "Address updated successfully",
+
+
+  "start_shopping_now": "ابدأ التسوق وضع أول طلب لك!",
+  "browse_products": "تصفح المنتجات",
+  "error_loading_orders": "خطأ في تحميل الطلبات",
+  "try_again": "حاول مرة أخرى",
+
+  "no_addresses_found": "No addresses found",
+  "add_address_to_continue": "Add an address to continue",
+  
+  "add_image": "Add Image",
+  "add_video": "Add Video",
+  "image_added_successfully": "✅ Image added successfully",
+  "video_added_successfully": "✅ Video added successfully",
+  "error": "❌ Error",
+  "product_media": "Product Media",
+  "add_at_least_one_image": "Add at least one image or video",
+  "please_add_product_image": "Please add at least one product image"
+
+
 
 
 

@@ -95,7 +95,6 @@
   "share_product": "مشاركة المنتج",
   
   "loading": "جاري التحميل...",
-  "error": "حدث خطأ",
   "success": "تم بنجاح",
   "coming_soon": "قريباً",
   
@@ -279,7 +278,6 @@
 "category_name": "اسم الفئة",
 "add": "إضافة",
 "category_added": "تمت إضافة الفئة",
-"add_at_least_one_image": "أضف صورة واحدة على الأقل",
 "edit_order": "تعديل الطلب",
 "order_details": "تفاصيل الطلب",
 "update_status": "تحديث الحالة",
@@ -564,7 +562,6 @@
   "choose_image_source": "اختر مصدر الصورة",
   "gallery": "المعرض",
   "camera": "الكاميرا",
-  "please_add_product_image": "الرجاء إضافة صورة للمنتج",
   "order_status_updated": "تم تحديث حالة الطلب بنجاح",
   "current": "الحالي",
 
@@ -578,8 +575,22 @@
 
   "update_address": "تحديث العنوان",
   "address_saved": "تم حفظ العنوان بنجاح",
-  "address_updated": "تم تحديث العنوان بنجاح"
+  "address_updated": "تم تحديث العنوان بنجاح",
 
+  "no_addresses_found": "لا توجد عناوين",
+
+  "start_shopping_now": "ابدأ التسوق وضع أول طلب لك!",
+  "browse_products": "تصفح المنتجات",
+  "error_loading_orders": "خطأ في تحميل الطلبات",
+  "try_again": "حاول مرة أخرى",
+  "product_media": "وسائط المنتج",
+    "add_image": "إضافة صورة",
+  "add_video": "إضافة فيديو",
+  "image_added_successfully": "✅ تمت إضافة الصورة بنجاح",
+  "video_added_successfully": "✅ تمت إضافة الفيديو بنجاح",
+  "error": "❌ خطأ",
+  "add_at_least_one_image": "أضف صورة أو فيديو واحد على الأقل",
+  "please_add_product_image": "الرجاء إضافة صورة للمنتج على الأقل"
 
 
 

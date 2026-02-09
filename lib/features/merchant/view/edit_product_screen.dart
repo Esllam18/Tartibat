@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tartibat/core/widgets/media_picker.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/responsive.dart';
 import '../../../core/localization/app_localizations.dart';
@@ -23,7 +24,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   late TextEditingController _nameArController;
   late TextEditingController _priceController;
   late TextEditingController _categoryController;
-  late TextEditingController _imageUrlController;
+  late List<String> _mediaPaths;
   late bool _isAvailable;
 
   @override
@@ -34,7 +35,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _priceController =
         TextEditingController(text: widget.product.price.toString());
     _categoryController = TextEditingController(text: widget.product.category);
-    _imageUrlController = TextEditingController(text: widget.product.imageUrl);
+    _mediaPaths = List.from(widget.product.mediaUrls.isEmpty
+        ? [widget.product.imageUrl]
+        : widget.product.mediaUrls);
     _isAvailable = widget.product.isAvailable;
   }
 
@@ -44,7 +47,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _nameArController.dispose();
     _priceController.dispose();
     _categoryController.dispose();
-    _imageUrlController.dispose();
     super.dispose();
   }
 
@@ -110,28 +112,62 @@ class _EditProductScreenState extends State<EditProductScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Media Picker
+                  Container(
+                    padding: EdgeInsets.all(r.spacing(16)),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.photo_library,
+                                color: AppColors.primary, size: 24),
+                            SizedBox(width: r.spacing(12)),
+                            Text(
+                              'product_media'.tr(context),
+                              style: GoogleFonts.cairo(
+                                fontSize: r.fontSize(16),
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: r.spacing(16)),
+                        MediaPicker(
+                          paths: _mediaPaths,
+                          onChanged: (paths) =>
+                              setState(() => _mediaPaths = paths),
+                          allowVideo: true,
+                          maxMedia: 5,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: r.spacing(20)),
+
+                  // Form fields
                   _buildTextField(
                     controller: _nameController,
                     label: 'product_name_english'.tr(context),
                     icon: Icons.label_outline,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'please_enter_product_name'.tr(context);
-                      }
-                      return null;
-                    },
+                    validator: (v) => v?.isEmpty ?? true
+                        ? 'please_enter_product_name'.tr(context)
+                        : null,
                   ),
                   SizedBox(height: r.spacing(16)),
                   _buildTextField(
                     controller: _nameArController,
                     label: 'product_name_arabic'.tr(context),
                     icon: Icons.label,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'please_enter_product_name_ar'.tr(context);
-                      }
-                      return null;
-                    },
+                    validator: (v) => v?.isEmpty ?? true
+                        ? 'please_enter_product_name_ar'.tr(context)
+                        : null,
                   ),
                   SizedBox(height: r.spacing(16)),
                   _buildTextField(
@@ -139,13 +175,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     label: 'price'.tr(context),
                     icon: Icons.attach_money,
                     keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
+                    validator: (v) {
+                      if (v?.isEmpty ?? true)
                         return 'please_enter_price'.tr(context);
-                      }
-                      if (double.tryParse(value) == null) {
+                      if (double.tryParse(v!) == null)
                         return 'invalid_price'.tr(context);
-                      }
                       return null;
                     },
                   ),
@@ -154,26 +188,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     controller: _categoryController,
                     label: 'category'.tr(context),
                     icon: Icons.category_outlined,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'please_enter_category'.tr(context);
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: r.spacing(16)),
-                  _buildTextField(
-                    controller: _imageUrlController,
-                    label: 'image_url'.tr(context),
-                    icon: Icons.image_outlined,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'please_enter_image_url'.tr(context);
-                      }
-                      return null;
-                    },
+                    validator: (v) => v?.isEmpty ?? true
+                        ? 'please_enter_category'.tr(context)
+                        : null,
                   ),
                   SizedBox(height: r.spacing(20)),
+
+                  // Available toggle
                   Container(
                     padding: EdgeInsets.all(r.spacing(16)),
                     decoration: BoxDecoration(
@@ -209,6 +230,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     ),
                   ),
                   SizedBox(height: r.spacing(32)),
+
+                  // Update button
                   SizedBox(
                     width: double.infinity,
                     height: r.responsive(mobile: 56, tablet: 60, desktop: 64),
@@ -248,21 +271,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
     String? Function(String?)? validator,
   }) {
     final r = context.responsive;
-
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       validator: validator,
       style: GoogleFonts.cairo(
-        fontSize: r.fontSize(14),
-        color: AppColors.textPrimary,
-      ),
+          fontSize: r.fontSize(14), color: AppColors.textPrimary),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: GoogleFonts.cairo(
-          fontSize: r.fontSize(14),
-          color: AppColors.textSecondary,
-        ),
+            fontSize: r.fontSize(14), color: AppColors.textSecondary),
         prefixIcon: Icon(icon, color: AppColors.primary),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -288,16 +306,28 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   void _updateProduct() {
     if (_formKey.currentState!.validate()) {
+      if (_mediaPaths.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('please_add_product_image'.tr(context)),
+            backgroundColor: AppColors.error,
+          ),
+        );
+        return;
+      }
+
       final updatedProduct = Product(
         id: widget.product.id,
         name: _nameController.text,
         nameAr: _nameArController.text,
         price: double.parse(_priceController.text),
         category: _categoryController.text,
-        imageUrl: _imageUrlController.text,
+        imageUrl: _mediaPaths.first,
+        mediaUrls: _mediaPaths,
         merchant: widget.product.merchant,
         rating: widget.product.rating,
         isAvailable: _isAvailable,
+        isFeatured: widget.product.isFeatured,
       );
 
       context.read<MerchantProductsCubit>().updateProduct(updatedProduct);

@@ -6,7 +6,7 @@ import 'package:tartibat/features/customer/data/bloc/checkout_state.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../../core/localization/app_localizations.dart';
-import '../../data/models/delivery_address_model.dart';
+import '../../data/models/address_model.dart'; // ✅ Changed from delivery_address_model
 
 class AddressBottomSheet extends StatefulWidget {
   const AddressBottomSheet({super.key});
@@ -272,7 +272,8 @@ class _AddressBottomSheetState extends State<AddressBottomSheet> {
 
   void _saveAddress() {
     if (_formKey.currentState!.validate()) {
-      final address = DeliveryAddress(
+      final address = Address(
+        // ✅ Changed from DeliveryAddress to Address
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         name: _nameController.text,
         phone: _phoneController.text,

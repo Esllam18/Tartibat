@@ -37,6 +37,10 @@ dependencies:
   # For phone call functionality
   url_launcher: ^6.2.3
   cached_network_image: ^3.4.1
+  flutter_image_compress: ^2.4.0
+  image_picker: ^1.2.1
+  video_compress: ^3.1.4
+  video_player: ^2.10.1
 
 
 dev_dependencies:

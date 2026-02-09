@@ -1,16 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tartibat/features/customer/data/models/address_model.dart';
 import 'package:tartibat/features/customer/data/models/cart_item_model.dart';
-import 'package:tartibat/features/customer/data/models/delivery_address_model.dart';
 import 'package:tartibat/features/customer/data/models/order_model.dart';
 import 'package:tartibat/features/customer/data/services/checkout_service.dart';
-
 import 'checkout_state.dart';
 
 class CheckoutCubit extends Cubit<CheckoutState> {
   final CheckoutService _service;
-  List<DeliveryAddress> _cachedAddresses = [];
-  DeliveryAddress? _selectedAddress;
-  final String _selectedPayment = 'card'; // ✅ Changed from 'cash' to 'card'
+  List<Address> _cachedAddresses = [];
+  Address? _selectedAddress;
+  String _selectedPayment = 'card';
 
   CheckoutCubit(this._service) : super(const CheckoutInitial()) {
     loadAddresses();
@@ -20,25 +19,31 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     try {
       emit(const CheckoutLoading());
       _cachedAddresses = await _service.getAddresses();
-      _selectedAddress = _cachedAddresses.firstWhere(
-        (a) => a.isDefault,
-        // ignore: cast_from_null_always_fails
-        orElse: () => _cachedAddresses.isNotEmpty
-            ? _cachedAddresses.first
-            // ignore: cast_from_null_always_fails
-            : null as DeliveryAddress,
-      );
-      emit(CheckoutReady(
-        addresses: _cachedAddresses,
-        selectedAddress: _selectedAddress,
-        selectedPayment: _selectedPayment,
-      ));
+
+      if (_cachedAddresses.isNotEmpty) {
+        _selectedAddress = _cachedAddresses.firstWhere(
+          (a) => a.isDefault,
+          orElse: () => _cachedAddresses.first,
+        );
+
+        emit(CheckoutReady(
+          addresses: _cachedAddresses,
+          selectedAddress: _selectedAddress,
+          selectedPayment: _selectedPayment,
+        ));
+      } else {
+        emit(CheckoutReady(
+          addresses: [],
+          selectedAddress: null,
+          selectedPayment: _selectedPayment,
+        ));
+      }
     } catch (e) {
       emit(CheckoutError(e.toString()));
     }
   }
 
-  void selectAddress(DeliveryAddress address) {
+  void selectAddress(Address address) {
     _selectedAddress = address;
     emit(CheckoutReady(
       addresses: _cachedAddresses,
@@ -47,7 +52,18 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     ));
   }
 
-  Future<void> saveAddress(DeliveryAddress address) async {
+  void selectPaymentMethod(String method) {
+    _selectedPayment = method;
+    if (_selectedAddress != null) {
+      emit(CheckoutReady(
+        addresses: _cachedAddresses,
+        selectedAddress: _selectedAddress,
+        selectedPayment: _selectedPayment,
+      ));
+    }
+  }
+
+  Future<void> saveAddress(Address address) async {
     try {
       final success = await _service.saveAddress(address);
       if (success) {
@@ -66,11 +82,23 @@ class CheckoutCubit extends Cubit<CheckoutState> {
         return;
       }
 
+      // Convert CartItem to OrderItem
+      final orderItems = items.map((cartItem) {
+        return OrderItem(
+          productId: cartItem.productId,
+          name: cartItem.name,
+          nameAr: cartItem.nameAr,
+          imageUrl: cartItem.imageUrl,
+          quantity: cartItem.quantity,
+          price: cartItem.price,
+        );
+      }).toList();
+
       final order = Order(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        items: items,
+        id: 'ORD${DateTime.now().millisecondsSinceEpoch}',
+        items: orderItems,
         address: _selectedAddress!,
-        paymentMethod: 'card',
+        paymentMethod: _selectedPayment,
         total: total,
         createdAt: DateTime.now(),
         status: 'pending',
@@ -86,4 +114,8 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       emit(CheckoutError(e.toString()));
     }
   }
+
+  List<Address> get addresses => _cachedAddresses;
+  Address? get selectedAddress => _selectedAddress;
+  String get selectedPayment => _selectedPayment;
 }

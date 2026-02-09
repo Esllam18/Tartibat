@@ -1,63 +1,35 @@
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tartibat/features/customer/data/models/order_model.dart';
 
-class MerchantOrdersService {
-  static const String _ordersKey = 'merchant_orders';
-  static MerchantOrdersService? _instance;
-  SharedPreferences? _prefs;
+import '../../../../core/services/shared_orders_service.dart';
 
-  MerchantOrdersService._();
+class MerchantOrdersService {
+  static MerchantOrdersService? _instance;
+  late final SharedOrdersService _sharedService;
+
+  MerchantOrdersService._(this._sharedService);
 
   static Future<MerchantOrdersService> getInstance() async {
-    _instance ??= MerchantOrdersService._();
-    _instance!._prefs ??= await SharedPreferences.getInstance();
+    if (_instance == null) {
+      final sharedService = await SharedOrdersService.getInstance();
+      _instance = MerchantOrdersService._(sharedService);
+    }
     return _instance!;
   }
 
   Future<List<Order>> getOrders() async {
-    try {
-      final String? json = _prefs?.getString(_ordersKey);
-      if (json == null || json.isEmpty) return [];
-      final List<dynamic> decoded = jsonDecode(json);
-      return decoded.map((item) => Order.fromJson(item)).toList();
-    } catch (e) {
-      print('Error loading orders: $e');
-      return [];
-    }
+    return await _sharedService.getAllOrders();
   }
 
+  // ✅ This is crucial for status updates
   Future<bool> updateOrderStatus(String orderId, String newStatus) async {
-    try {
-      final orders = await getOrders();
-      final index = orders.indexWhere((o) => o.id == orderId);
-      if (index != -1) {
-        final updatedOrder = Order(
-          id: orders[index].id,
-          items: orders[index].items,
-          address: orders[index].address,
-          paymentMethod: orders[index].paymentMethod,
-          total: orders[index].total,
-          createdAt: orders[index].createdAt,
-          status: newStatus,
-        );
-        orders[index] = updatedOrder;
-        return await _saveOrders(orders);
-      }
-      return false;
-    } catch (e) {
-      print('Error updating order status: $e');
-      return false;
+    final success = await _sharedService.updateOrderStatus(orderId, newStatus);
+    if (success) {
+      print('✅ Order $orderId updated to: $newStatus');
     }
+    return success;
   }
 
-  Future<bool> _saveOrders(List<Order> orders) async {
-    try {
-      final encoded = jsonEncode(orders.map((o) => o.toJson()).toList());
-      return await _prefs?.setString(_ordersKey, encoded) ?? false;
-    } catch (e) {
-      print('Error saving orders: $e');
-      return false;
-    }
+  Future<Order?> getOrderById(String orderId) async {
+    return await _sharedService.getOrderById(orderId);
   }
 }

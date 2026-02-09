@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../core/widgets/media_picker.dart'; // ✅ Fixed import path
 import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/responsive.dart';
 import '../../../core/localization/app_localizations.dart';
@@ -21,7 +22,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _nameArController = TextEditingController();
   final _priceController = TextEditingController();
   final _categoryController = TextEditingController();
-  final _imageUrlController = TextEditingController();
+  List<String> _mediaPaths = [];
   bool _isAvailable = true;
 
   @override
@@ -30,7 +31,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
     _nameArController.dispose();
     _priceController.dispose();
     _categoryController.dispose();
-    _imageUrlController.dispose();
     super.dispose();
   }
 
@@ -56,6 +56,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
+              duration: const Duration(seconds: 2),
             ),
           );
         }
@@ -96,6 +97,74 @@ class _AddProductScreenState extends State<AddProductScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Media Picker Section
+                  Container(
+                    padding: EdgeInsets.all(r.spacing(16)),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.photo_library,
+                                color: AppColors.primary, size: 24),
+                            SizedBox(width: r.spacing(12)),
+                            Text(
+                              'product_media'.tr(context),
+                              style: GoogleFonts.cairo(
+                                fontSize: r.fontSize(16),
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: r.spacing(16)),
+                        MediaPicker(
+                          paths: _mediaPaths,
+                          onChanged: (paths) {
+                            setState(() {
+                              _mediaPaths = paths;
+                            });
+                            print(
+                                '✅ Media paths updated: ${paths.length} files');
+                          },
+                          allowVideo: true,
+                          maxMedia: 5,
+                        ),
+                        if (_mediaPaths.isEmpty)
+                          Padding(
+                            padding: EdgeInsets.only(top: r.spacing(8)),
+                            child: Text(
+                              'add_at_least_one_image'.tr(context),
+                              style: GoogleFonts.cairo(
+                                fontSize: r.fontSize(12),
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          )
+                        else
+                          Padding(
+                            padding: EdgeInsets.only(top: r.spacing(8)),
+                            child: Text(
+                              '✅ ${_mediaPaths.length} ${_mediaPaths.length == 1 ? 'file' : 'files'} selected',
+                              style: GoogleFonts.cairo(
+                                fontSize: r.fontSize(12),
+                                color: AppColors.success,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: r.spacing(20)),
+
+                  // Product Name (English)
                   _buildTextField(
                     controller: _nameController,
                     label: 'product_name_english'.tr(context),
@@ -108,6 +177,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     },
                   ),
                   SizedBox(height: r.spacing(16)),
+
+                  // Product Name (Arabic)
                   _buildTextField(
                     controller: _nameArController,
                     label: 'product_name_arabic'.tr(context),
@@ -120,6 +191,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     },
                   ),
                   SizedBox(height: r.spacing(16)),
+
+                  // Price
                   _buildTextField(
                     controller: _priceController,
                     label: 'price'.tr(context),
@@ -136,6 +209,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     },
                   ),
                   SizedBox(height: r.spacing(16)),
+
+                  // Category
                   _buildTextField(
                     controller: _categoryController,
                     label: 'category'.tr(context),
@@ -147,19 +222,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: r.spacing(16)),
-                  _buildTextField(
-                    controller: _imageUrlController,
-                    label: 'image_url'.tr(context),
-                    icon: Icons.image_outlined,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'please_enter_image_url'.tr(context);
-                      }
-                      return null;
-                    },
-                  ),
                   SizedBox(height: r.spacing(20)),
+
+                  // Available Toggle
                   Container(
                     padding: EdgeInsets.all(r.spacing(16)),
                     decoration: BoxDecoration(
@@ -195,6 +260,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     ),
                   ),
                   SizedBox(height: r.spacing(32)),
+
+                  // Add Product Button
                   SizedBox(
                     width: double.infinity,
                     height: r.responsive(mobile: 56, tablet: 60, desktop: 64),
@@ -274,16 +341,33 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   void _addProduct() {
     if (_formKey.currentState!.validate()) {
+      // Validate media
+      if (_mediaPaths.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('please_add_product_image'.tr(context)),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        return;
+      }
+
+      print('🎉 Adding product with ${_mediaPaths.length} media files');
+
       final product = Product(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        id: 'PROD${DateTime.now().millisecondsSinceEpoch}',
         name: _nameController.text,
         nameAr: _nameArController.text,
         price: double.parse(_priceController.text),
         category: _categoryController.text,
-        imageUrl: _imageUrlController.text,
+        imageUrl: _mediaPaths.first,
+        mediaUrls: _mediaPaths,
         merchant: 'My Store',
         rating: 4.5,
         isAvailable: _isAvailable,
+        isFeatured: false,
       );
 
       context.read<MerchantProductsCubit>().addProduct(product);

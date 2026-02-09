@@ -8,6 +8,8 @@ class Product {
   final String merchant;
   final double rating;
   final bool isAvailable;
+  final List<String> mediaUrls; // ✅ Add this
+
   final bool isFeatured;
 
   Product({
@@ -18,6 +20,8 @@ class Product {
     required this.category,
     required this.imageUrl,
     required this.merchant,
+    this.mediaUrls = const [], // ✅ Add this
+
     this.rating = 4.5,
     this.isAvailable = true,
     this.isFeatured = false,
@@ -34,6 +38,8 @@ class Product {
         'imageUrl': imageUrl,
         'merchant': merchant,
         'rating': rating,
+        'mediaUrls': mediaUrls, // ✅ Add this
+
         'isAvailable': isAvailable,
         'isFeatured': isFeatured,
       };
@@ -47,6 +53,9 @@ class Product {
         imageUrl: json['imageUrl'] ?? '',
         merchant: json['merchant'] ?? '',
         rating: (json['rating'] ?? 4.5).toDouble(),
+        mediaUrls:
+            (json['mediaUrls'] as List?)?.cast<String>() ?? [], // ✅ Add this
+
         isAvailable: json['isAvailable'] ?? true,
         isFeatured: json['isFeatured'] ?? false,
       );
