@@ -13,7 +13,7 @@ import '../../trader/view/trader_main_layout.dart';
 class SplashResolver {
   static Future<Widget> resolve() async {
     final lang = await LanguageCacheHelper().getCachedLanguageCode();
-    if (lang.isEmpty) return const LanguageScreen();
+    if (lang.isNotEmpty) return const LanguageScreen();
 
     final done = await OnboardingCacheHelper().isOnboardingCompleted();
     if (!done) return const OnboardingScreen();
