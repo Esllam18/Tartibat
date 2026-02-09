@@ -4,11 +4,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tartibat/features/customer/data/bloc/cart_cubit.dart';
 import 'package:tartibat/features/customer/data/bloc/checkout_cubit.dart';
 import 'package:tartibat/features/customer/data/bloc/favorites_cubit.dart';
+import 'package:tartibat/features/customer/data/bloc/profile_cubit.dart';
 import 'core/localization/app_localizations.dart';
 import 'core/localization/locale_cubit.dart';
 import 'features/customer/data/services/favorites_service.dart';
 import 'features/customer/data/services/cart_service.dart';
 import 'features/customer/data/services/checkout_service.dart';
+import 'features/customer/data/services/profile_service.dart';
 import 'features/splash/view/splash_screen.dart';
 
 void main() async {
@@ -18,11 +20,13 @@ void main() async {
   final favoritesService = await FavoritesService.getInstance();
   final cartService = await CartService.getInstance();
   final checkoutService = await CheckoutService.getInstance();
+  final profileService = await ProfileService.getInstance();
 
   runApp(MyApp(
     favoritesService: favoritesService,
     cartService: cartService,
     checkoutService: checkoutService,
+    profileService: profileService,
   ));
 }
 
@@ -30,12 +34,14 @@ class MyApp extends StatelessWidget {
   final FavoritesService favoritesService;
   final CartService cartService;
   final CheckoutService checkoutService;
+  final ProfileService profileService;
 
   const MyApp({
     super.key,
     required this.favoritesService,
     required this.cartService,
     required this.checkoutService,
+    required this.profileService,
   });
 
   @override
@@ -53,6 +59,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => CheckoutCubit(checkoutService),
+        ),
+        BlocProvider(
+          create: (_) => ProfileCubit(profileService),
         ),
       ],
       child: BlocBuilder<LocaleCubit, ChangeLocaleState>(

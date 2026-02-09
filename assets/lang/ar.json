@@ -482,7 +482,38 @@
   "no_active_orders": "لا توجد طلبات نشطة",
   "no_delivered_orders": "لا توجد طلبات مستلمة",
   "start_shopping_message": "ابدأ التسوق لإنشاء أول طلب لك!",
-  "on_the_way": "في الطريق"
+  "on_the_way": "في الطريق",
+  "saved_addresses": "العناوين المحفوظة",
+
+  "logged_out_successfully": "تم تسجيل الخروج بنجاح",
+  "profile_updated_successfully": "تم تحديث الملف الشخصي بنجاح",
+
+  "please_enter_email": "الرجاء إدخال البريد الإلكتروني",
+  "help_coming_soon": "المساعدة والدعم قريباً!",
+  "no_saved_addresses": "لا توجد عناوين محفوظة",
+  "add_address_message": "أضف عناوين التوصيل الخاصة بك لإتمام الطلبات بشكل أسرع",
+    "select_language": "اختر اللغة",
+  "call_us": "اتصل بنا",
+  "email_us": "راسلنا",
+  "whatsapp": "واتساب",
+  "chat_with_us": "تحدث معنا",
+  "faq": "الأسئلة الشائعة",
+  "common_questions": "الأسئلة الشائعة",
+  "faq_coming_soon": "قسم الأسئلة الشائعة قريباً!",
+    "choose_your_preferred_language": "اختر لغتك المفضلة",
+  "we_are_here_to_help": "نحن هنا لمساعدتك على مدار الساعة",
+  "chat_on_whatsapp": "تحدث عبر واتساب",
+  "visit_website": "زيارة الموقع",
+  "copy_phone_number": "نسخ رقم الهاتف",
+  "copy_email": "نسخ البريد الإلكتروني",
+  "tap_to_copy": "اضغط للنسخ",
+  "phone_copied": "تم نسخ رقم الهاتف",
+  "email_copied": "تم نسخ البريد الإلكتروني",
+  "cannot_make_call": "لا يمكن إجراء المكالمة",
+  "cannot_open_email": "لا يمكن فتح تطبيق البريد",
+  "cannot_open_whatsapp": "لا يمكن فتح واتساب",
+  "cannot_open_website": "لا يمكن فتح الموقع",
+  "support_request": "طلب دعم"
 
 
 

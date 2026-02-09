@@ -460,7 +460,39 @@
   "no_active_orders": "No Active Orders",
   "no_delivered_orders": "No Delivered Orders",
   "start_shopping_message": "Start shopping to create your first order!",
-  "on_the_way": "On the way"
+  "on_the_way": "On the way",
+  "saved_addresses": "Saved Addresses",
+
+  "logged_out_successfully": "Logged out successfully",
+  "profile_updated_successfully": "Profile updated successfully",
+  "save_changes": "Save Changes",
+
+  "please_enter_email": "Please enter your email",
+  "help_coming_soon": "Help & Support coming soon!",
+  "no_saved_addresses": "No Saved Addresses",
+  "add_address_message": "Add your delivery addresses for faster checkout",
+    "select_language": "Select Language",
+  "call_us": "Call Us",
+  "email_us": "Email Us",
+  "whatsapp": "WhatsApp",
+  "chat_with_us": "Chat with us",
+  "faq": "FAQ",
+  "common_questions": "Common Questions",
+  "faq_coming_soon": "FAQ section coming soon!",
+    "choose_your_preferred_language": "Choose your preferred language",
+  "we_are_here_to_help": "We're here to help you 24/7",
+  "chat_on_whatsapp": "Chat on WhatsApp",
+  "visit_website": "Visit Website",
+  "copy_phone_number": "Copy Phone Number",
+  "copy_email": "Copy Email Address",
+  "tap_to_copy": "Tap to copy",
+  "phone_copied": "Phone number copied to clipboard",
+  "email_copied": "Email address copied to clipboard",
+  "cannot_make_call": "Cannot make phone call",
+  "cannot_open_email": "Cannot open email app",
+  "cannot_open_whatsapp": "Cannot open WhatsApp",
+  "cannot_open_website": "Cannot open website",
+  "support_request": "Support Request"
 
   
 
