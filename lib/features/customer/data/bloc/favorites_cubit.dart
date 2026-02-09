@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tartibat/features/customer/data/models/favorite_model.dart';
 import 'package:tartibat/features/customer/data/models/product_model.dart';
 import 'package:tartibat/features/customer/data/services/favorites_service.dart';
-
 import 'favorites_state.dart';
 
 class FavoritesCubit extends Cubit<FavoritesState> {
@@ -17,14 +16,14 @@ class FavoritesCubit extends Cubit<FavoritesState> {
     try {
       emit(const FavoritesLoading());
       _cachedFavorites = await _service.getFavorites();
-      emit(FavoritesLoaded(_cachedFavorites));
+      emit(FavoritesLoaded(List.from(_cachedFavorites)));
     } catch (e) {
       emit(FavoritesError(e.toString()));
     }
   }
 
   Future<void> toggleFavorite(Product product) async {
-    final isFav = await _service.isFavorite(product.id);
+    final isFav = _cachedFavorites.any((f) => f.id == product.id);
 
     if (isFav) {
       await removeFavorite(product.id);
@@ -51,24 +50,43 @@ class FavoritesCubit extends Cubit<FavoritesState> {
       if (success) {
         _cachedFavorites.add(favorite);
         emit(FavoritesLoaded(List.from(_cachedFavorites)));
-        emit(FavoriteAdded(favorite));
+        emit(FavoriteAddedSuccess(favorite.name));
+        emit(FavoritesLoaded(List.from(_cachedFavorites)));
       }
     } catch (e) {
       emit(FavoritesError(e.toString()));
+      emit(FavoritesLoaded(List.from(_cachedFavorites)));
     }
   }
 
   Future<void> removeFavorite(String productId) async {
     try {
+      // Get product name before removing
+      final favorite = _cachedFavorites.firstWhere(
+        (f) => f.id == productId,
+        orElse: () => FavoriteModel(
+          id: '',
+          name: 'Product',
+          nameAr: 'المنتج',
+          price: 0,
+          imageUrl: '',
+          merchant: '',
+          category: '',
+          addedAt: DateTime.now(),
+        ),
+      );
+
       final success = await _service.removeFavorite(productId);
 
       if (success) {
         _cachedFavorites.removeWhere((f) => f.id == productId);
         emit(FavoritesLoaded(List.from(_cachedFavorites)));
-        emit(FavoriteRemoved(productId));
+        emit(FavoriteRemovedSuccess(favorite.name));
+        emit(FavoritesLoaded(List.from(_cachedFavorites)));
       }
     } catch (e) {
       emit(FavoritesError(e.toString()));
+      emit(FavoritesLoaded(List.from(_cachedFavorites)));
     }
   }
 
@@ -76,7 +94,7 @@ class FavoritesCubit extends Cubit<FavoritesState> {
     try {
       await _service.clearAll();
       _cachedFavorites.clear();
-      emit(FavoritesLoaded([]));
+      emit(FavoritesLoaded(const []));
     } catch (e) {
       emit(FavoritesError(e.toString()));
     }

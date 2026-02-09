@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tartibat/features/customer/data/bloc/cart_cubit.dart';
+import 'package:tartibat/features/customer/data/bloc/cart_state.dart';
+import 'package:tartibat/features/customer/data/bloc/favorites_cubit.dart';
+import 'package:tartibat/features/customer/data/bloc/favorites_state.dart';
+import 'package:tartibat/features/customer/view/customer_home_screen.dart';
+import 'package:tartibat/features/customer/widgets/custom_bottom_nav_item.dart';
+import '../../../core/utils/responsive.dart';
 import '../../../core/localization/app_localizations.dart';
-import 'customer_home_screen.dart';
+
 import 'favorites_screen.dart';
 import 'cart_screen.dart';
 import 'profile_screen.dart';
@@ -26,66 +32,77 @@ class _CustomerMainLayoutState extends State<CustomerMainLayout> {
 
   @override
   Widget build(BuildContext context) {
+    final r = context.responsive;
+
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
+          color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: AppColors.shadowMedium,
+              color: Colors.black.withOpacity(0.08),
               blurRadius: 20,
-              offset: Offset(0, -5),
+              offset: const Offset(0, -5),
             ),
           ],
         ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: AppColors.surface,
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: AppColors.textSecondary,
-          elevation: 0,
-          selectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 12,
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: r.spacing(8),
+              vertical: r.spacing(8),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CustomBottomNavItem(
+                  icon: Icons.home_outlined,
+                  activeIcon: Icons.home_rounded,
+                  label: 'home'.tr(context),
+                  isActive: _currentIndex == 0,
+                  onTap: () => setState(() => _currentIndex = 0),
+                ),
+                BlocBuilder<FavoritesCubit, FavoritesState>(
+                  builder: (context, state) {
+                    final count = state is FavoritesLoaded ? state.count : 0;
+                    return CustomBottomNavItem(
+                      icon: Icons.favorite_border,
+                      activeIcon: Icons.favorite,
+                      label: 'favorites'.tr(context),
+                      isActive: _currentIndex == 1,
+                      badgeCount: count,
+                      onTap: () => setState(() => _currentIndex = 1),
+                    );
+                  },
+                ),
+                BlocBuilder<CartCubit, CartState>(
+                  builder: (context, state) {
+                    final count = state is CartLoaded
+                        ? state.itemCount
+                        : 0; // ✅ Use itemCount
+                    return CustomBottomNavItem(
+                      icon: Icons.shopping_cart_outlined,
+                      activeIcon: Icons.shopping_cart,
+                      label: 'cart'.tr(context),
+                      isActive: _currentIndex == 2,
+                      badgeCount: count,
+                      onTap: () => setState(() => _currentIndex = 2),
+                    );
+                  },
+                ),
+                CustomBottomNavItem(
+                  icon: Icons.person_outline,
+                  activeIcon: Icons.person,
+                  label: 'profile'.tr(context),
+                  isActive: _currentIndex == 3,
+                  onTap: () => setState(() => _currentIndex = 3),
+                ),
+              ],
+            ),
           ),
-          unselectedLabelStyle: const TextStyle(fontSize: 11),
-          items: [
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.home_outlined, size: 26),
-              activeIcon: _buildActiveIcon(Icons.home_rounded, 24),
-              label: 'home'.tr(context),
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.favorite_border, size: 24),
-              activeIcon: _buildActiveIcon(Icons.favorite, 22),
-              label: 'favorites'.tr(context),
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.shopping_cart_outlined, size: 24),
-              activeIcon: _buildActiveIcon(Icons.shopping_cart, 22),
-              label: 'cart'.tr(context),
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.person_outline, size: 24),
-              activeIcon: _buildActiveIcon(Icons.person, 22),
-              label: 'profile'.tr(context),
-            ),
-          ],
         ),
       ),
-    );
-  }
-
-  Widget _buildActiveIcon(IconData icon, double size) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-      ),
-      child: Icon(icon, color: AppColors.textWhite, size: size),
     );
   }
 }

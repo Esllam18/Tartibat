@@ -41,20 +41,20 @@ class FavoritesError extends FavoritesState {
   List<Object?> get props => [message];
 }
 
-class FavoriteAdded extends FavoritesState {
-  final FavoriteModel favorite;
+class FavoriteAddedSuccess extends FavoritesState {
+  final String productName;
 
-  const FavoriteAdded(this.favorite);
+  const FavoriteAddedSuccess(this.productName);
 
   @override
-  List<Object?> get props => [favorite];
+  List<Object?> get props => [productName];
 }
 
-class FavoriteRemoved extends FavoritesState {
-  final String productId;
+class FavoriteRemovedSuccess extends FavoritesState {
+  final String productName;
 
-  const FavoriteRemoved(this.productId);
+  const FavoriteRemovedSuccess(this.productName);
 
   @override
-  List<Object?> get props => [productId];
+  List<Object?> get props => [productName];
 }

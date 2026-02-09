@@ -1,53 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tartibat/features/customer/data/bloc/cart_cubit.dart';
+import 'package:tartibat/features/customer/data/bloc/cart_state.dart';
 import 'package:tartibat/features/customer/widgets/cart/cart_empty.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/utils/responsive.dart';
 
-import '../widgets/cart/cart_app_bar.dart';
-import '../widgets/cart/cart_list.dart';
-import '../widgets/cart/cart_total_bottom.dart';
+import '../widgets/cart/cart_header.dart';
+import '../widgets/cart/cart_item_card.dart';
+import '../widgets/cart/cart_summary_bar.dart';
 
-class CartScreen extends StatefulWidget {
+class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  final List<Map<String, dynamic>> _cartItems = [];
-
-  int get _totalPrice => _cartItems.fold(
-        0,
-        (sum, item) =>
-            sum + ((item['price'] as int) * (item['quantity'] as int)),
-      );
-
-  void _removeItem(int index) {
-    setState(() => _cartItems.removeAt(index));
-  }
-
-  void _updateQuantity(int index, int newQuantity) {
-    setState(() => _cartItems[index]['quantity'] = newQuantity);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final r = context.responsive;
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: CartAppBar(itemCount: _cartItems.length),
-      body: _cartItems.isEmpty
-          ? const CartEmptyClean()
-          : Column(
-              children: [
-                Expanded(
-                  child: CartList(
-                    items: _cartItems,
-                    onRemove: _removeItem,
-                    onQuantityChanged: _updateQuantity,
-                  ),
-                ),
-                CartTotalBottom(totalPrice: _totalPrice, onCheckout: () {}),
-              ],
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const CartHeader(),
+            Expanded(
+              child: BlocBuilder<CartCubit, CartState>(
+                builder: (context, state) {
+                  if (state is CartLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (state is CartLoaded) {
+                    if (state.isEmpty) {
+                      return const CartEmptyState();
+                    }
+
+                    return ListView.builder(
+                      padding: EdgeInsets.all(r.spacing(16)),
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: state.items.length,
+                      itemBuilder: (context, index) {
+                        return CartItemCard(item: state.items[index]);
+                      },
+                    );
+                  }
+
+                  return const SizedBox();
+                },
+              ),
             ),
+            BlocBuilder<CartCubit, CartState>(
+              builder: (context, state) {
+                if (state is CartLoaded && !state.isEmpty) {
+                  return const CartSummaryBar();
+                }
+                return const SizedBox();
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

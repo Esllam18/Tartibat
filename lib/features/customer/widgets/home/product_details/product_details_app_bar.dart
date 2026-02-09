@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../../../core/constants/app_colors.dart';
-import '../../../../../core/utils/responsive.dart';
-import '../../../../../core/localization/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tartibat/core/constants/app_colors.dart';
+import 'package:tartibat/core/localization/app_localizations.dart';
+import 'package:tartibat/core/utils/responsive.dart';
+import 'package:tartibat/features/customer/data/bloc/favorites_cubit.dart';
+import 'package:tartibat/features/customer/data/bloc/favorites_state.dart';
+import 'package:tartibat/features/customer/data/models/product_model.dart';
 
 class ProductDetailsAppBar extends StatelessWidget {
   final String imageUrl;
-  final bool isFavorite;
-  final VoidCallback onFavoriteToggle;
+  final String productId;
+  final Product? productModel;
 
   const ProductDetailsAppBar({
     super.key,
     required this.imageUrl,
-    required this.isFavorite,
-    required this.onFavoriteToggle,
+    required this.productId,
+    this.productModel,
   });
 
   @override
@@ -32,12 +36,28 @@ class ProductDetailsAppBar extends StatelessWidget {
         () => Navigator.pop(context),
       ),
       actions: [
-        _buildIconButton(
-            context,
-            r,
-            isFavorite ? Icons.favorite : Icons.favorite_border,
-            onFavoriteToggle,
-            color: isFavorite ? Colors.red : null),
+        if (productModel != null)
+          BlocBuilder<FavoritesCubit, FavoritesState>(
+            builder: (context, state) {
+              final isFav = state is FavoritesLoaded
+                  ? state.isFavorite(productId)
+                  : false;
+
+              return _buildIconButton(
+                context,
+                r,
+                isFav ? Icons.favorite : Icons.favorite_border,
+                () {
+                  if (productModel != null) {
+                    context
+                        .read<FavoritesCubit>()
+                        .toggleFavorite(productModel!);
+                  }
+                },
+                color: isFav ? Colors.red : null,
+              );
+            },
+          ),
         _buildIconButton(context, r, Icons.share_outlined, () {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('share_product'.tr(context))),
@@ -58,8 +78,11 @@ class ProductDetailsAppBar extends StatelessWidget {
             ),
             errorWidget: (_, __, ___) => Container(
               color: Colors.grey.shade100,
-              child: Icon(Icons.image_not_supported,
-                  size: 60, color: Colors.grey.shade400),
+              child: Icon(
+                Icons.image_not_supported,
+                size: 60,
+                color: Colors.grey.shade400,
+              ),
             ),
           ),
         ),
@@ -68,8 +91,12 @@ class ProductDetailsAppBar extends StatelessWidget {
   }
 
   Widget _buildIconButton(
-      BuildContext context, Responsive r, IconData icon, VoidCallback onPressed,
-      {Color? color}) {
+    BuildContext context,
+    Responsive r,
+    IconData icon,
+    VoidCallback onPressed, {
+    Color? color,
+  }) {
     return IconButton(
       icon: Container(
         padding: EdgeInsets.all(r.spacing(8)),

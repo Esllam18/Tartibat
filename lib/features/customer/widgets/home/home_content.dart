@@ -64,7 +64,6 @@ class HomeContent extends StatelessWidget {
   }
 
   void _showFilters(BuildContext context) {
-    // TODO: Implement filter bottom sheet
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('filter_coming_soon'.tr(context)),

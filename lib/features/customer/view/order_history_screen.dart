@@ -26,7 +26,6 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   Future<void> _loadOrders() async {
     setState(() => _isLoading = true);
     await Future.delayed(const Duration(seconds: 1));
-    // TODO: Load from backend
     setState(() => _isLoading = false);
   }
 

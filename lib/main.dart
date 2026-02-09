@@ -1,32 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tartibat/features/customer/data/bloc/cart_cubit.dart';
 import 'package:tartibat/features/customer/data/bloc/favorites_cubit.dart';
-import 'package:tartibat/features/customer/data/services/favorites_service.dart';
 import 'core/localization/app_localizations.dart';
 import 'core/localization/locale_cubit.dart';
+import 'features/customer/data/services/favorites_service.dart';
+import 'features/customer/data/services/cart_service.dart';
 import 'features/splash/view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    // ignore: unused_local_variable
-  final favoritesService = await FavoritesService.getInstance();
 
-  runApp(MyApp(favoritesService: favoritesService));
+  // Initialize services
+  final favoritesService = await FavoritesService.getInstance();
+  final cartService = await CartService.getInstance();
+
+  runApp(MyApp(
+    favoritesService: favoritesService,
+    cartService: cartService,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final FavoritesService favoritesService;
+  final CartService cartService;
 
-  const MyApp({super.key, required this.favoritesService});
+  const MyApp({
+    super.key,
+    required this.favoritesService,
+    required this.cartService,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => LocaleCubit()..getSavedLanguage()),
+        BlocProvider(
+          create: (context) => LocaleCubit()..getSavedLanguage(),
+        ),
         BlocProvider(
           create: (_) => FavoritesCubit(favoritesService),
+        ),
+        BlocProvider(
+          create: (_) => CartCubit(cartService),
         ),
       ],
       child: BlocBuilder<LocaleCubit, ChangeLocaleState>(
@@ -35,7 +52,10 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'ترتيبات',
             locale: state.locale,
-            supportedLocales: const [Locale('ar'), Locale('en')],
+            supportedLocales: const [
+              Locale('ar'),
+              Locale('en'),
+            ],
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,

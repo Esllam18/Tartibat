@@ -18,7 +18,7 @@ class FavoritesService {
   Future<List<FavoriteModel>> getFavorites() async {
     try {
       final String? favoritesJson = _prefs?.getString(_key);
-      if (favoritesJson == null) return [];
+      if (favoritesJson == null || favoritesJson.isEmpty) return [];
 
       final List<dynamic> decoded = jsonDecode(favoritesJson);
       return decoded.map((item) => FavoriteModel.fromJson(item)).toList();
@@ -30,11 +30,14 @@ class FavoritesService {
   Future<bool> addFavorite(FavoriteModel favorite) async {
     try {
       final favorites = await getFavorites();
-      if (!favorites.any((f) => f.id == favorite.id)) {
-        favorites.add(favorite);
-        return await _saveFavorites(favorites);
+
+      if (favorites.any((f) => f.id == favorite.id)) {
+        return false;
       }
-      return false;
+
+      favorites.add(favorite);
+      final success = await _saveFavorites(favorites);
+      return success;
     } catch (e) {
       return false;
     }
@@ -44,7 +47,8 @@ class FavoritesService {
     try {
       final favorites = await getFavorites();
       favorites.removeWhere((f) => f.id == productId);
-      return await _saveFavorites(favorites);
+      final success = await _saveFavorites(favorites);
+      return success;
     } catch (e) {
       return false;
     }
@@ -68,7 +72,8 @@ class FavoritesService {
       final String encoded = jsonEncode(
         favorites.map((f) => f.toJson()).toList(),
       );
-      return await _prefs?.setString(_key, encoded) ?? false;
+      final success = await _prefs?.setString(_key, encoded) ?? false;
+      return success;
     } catch (e) {
       return false;
     }

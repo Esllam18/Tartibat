@@ -426,7 +426,23 @@
 
   "clear": "مسح",
   "no_favorites_yet": "لا توجد مفضلات بعد",
-  "start_adding_favorites": "ابدأ بإضافة منتجاتك المفضلة لرؤيتها هنا"
+  "start_adding_favorites": "ابدأ بإضافة منتجاتك المفضلة لرؤيتها هنا",
+
+  "cart_empty": "سلة التسوق فارغة",
+  "start_adding_cart": "ابدأ بإضافة المنتجات إلى سلتك",
+  "profile_coming_soon": "الحساب قريباً",
+  "profile_feature_description": "إدارة حسابك وطلباتك وإعداداتك",
+   "added_to_favorites": "تمت الإضافة إلى المفضلة",
+
+  "try_different_filters": "جرب تعديل الفلاتر لرؤية المزيد من المنتجات",
+  "reset_filters": "إعادة تعيين الفلاتر",
+    "removed_from_cart": "تمت الإزالة من السلة",
+  "tax": "الضريبة (14%)",
+  "shipping": "الشحن",
+  "checkout_feature_coming_soon": "ميزة إتمام الطلب قريباً!",
+  "clear_cart": "مسح السلة",
+  "clear_cart_confirm": "هل أنت متأكد من إزالة جميع العناصر من سلتك؟",
+   "remove_from_cart": "إزالة من السلة"
 
 
 

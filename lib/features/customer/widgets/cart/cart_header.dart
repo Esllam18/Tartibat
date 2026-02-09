@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tartibat/features/customer/data/bloc/favorites_cubit.dart';
-import 'package:tartibat/features/customer/data/bloc/favorites_state.dart';
+import 'package:tartibat/features/customer/data/bloc/cart_cubit.dart';
+import 'package:tartibat/features/customer/data/bloc/cart_state.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../../core/localization/app_localizations.dart';
 
-class FavoritesHeader extends StatelessWidget {
-  const FavoritesHeader({super.key});
+class CartHeader extends StatelessWidget {
+  const CartHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class FavoritesHeader extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'favorites'.tr(context),
+                  'cart'.tr(context),
                   style: GoogleFonts.cairo(
                     fontSize: r.fontSize(26),
                     fontWeight: FontWeight.w900,
@@ -34,9 +34,11 @@ class FavoritesHeader extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: r.spacing(4)),
-                BlocBuilder<FavoritesCubit, FavoritesState>(
+                BlocBuilder<CartCubit, CartState>(
                   builder: (context, state) {
-                    final count = state is FavoritesLoaded ? state.count : 0;
+                    final count = state is CartLoaded
+                        ? state.itemCount
+                        : 0; // ✅ Use itemCount
                     return Text(
                       '$count ${'items'.tr(context)}',
                       style: GoogleFonts.cairo(
@@ -50,9 +52,9 @@ class FavoritesHeader extends StatelessWidget {
               ],
             ),
           ),
-          BlocBuilder<FavoritesCubit, FavoritesState>(
+          BlocBuilder<CartCubit, CartState>(
             builder: (context, state) {
-              if (state is! FavoritesLoaded || state.isEmpty) {
+              if (state is! CartLoaded || state.isEmpty) {
                 return SizedBox(width: r.spacing(40));
               }
 
@@ -72,17 +74,10 @@ class FavoritesHeader extends StatelessWidget {
 
     showDialog(
       context: context,
-      barrierDismissible: true,
       builder: (dialogContext) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Container(
           padding: EdgeInsets.all(r.spacing(24)),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(24),
-          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -100,7 +95,7 @@ class FavoritesHeader extends StatelessWidget {
               ),
               SizedBox(height: r.spacing(20)),
               Text(
-                'clear_favorites'.tr(context),
+                'clear_cart'.tr(context),
                 style: GoogleFonts.cairo(
                   fontSize: r.fontSize(22),
                   fontWeight: FontWeight.w900,
@@ -112,7 +107,7 @@ class FavoritesHeader extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: r.spacing(8)),
                 child: Text(
-                  'clear_favorites_confirm'.tr(context),
+                  'clear_cart_confirm'.tr(context),
                   style: GoogleFonts.cairo(
                     fontSize: r.fontSize(15),
                     color: AppColors.textSecondary,
@@ -148,7 +143,7 @@ class FavoritesHeader extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        context.read<FavoritesCubit>().clearAll();
+                        context.read<CartCubit>().clearCart();
                         Navigator.pop(dialogContext);
                       },
                       style: ElevatedButton.styleFrom(

@@ -404,8 +404,23 @@
 
   "clear": "Clear",
   "no_favorites_yet": "No Favorites Yet",
-  "start_adding_favorites": "Start adding your favorite products to see them here"
+  "start_adding_favorites": "Start adding your favorite products to see them here",
 
+  "cart_empty": "Your cart is empty",
+  "start_adding_cart": "Start adding products to your cart",
+  "profile_coming_soon": "Profile Coming Soon",
+  "profile_feature_description": "Manage your account, orders, and settings",
+   "added_to_favorites": "تمت الإضافة إلى المفضلة",
+ 
+  "try_different_filters": "Try adjusting your filters to see more products",
+  "reset_filters": "Reset Filters",
+   "removed_from_cart": "removed from cart",
+  "tax": "Tax (14%)",
+  "shipping": "Shipping",
+  "checkout_feature_coming_soon": "Checkout feature coming soon!",
+  "clear_cart": "Clear Cart",
+  "clear_cart_confirm": "Are you sure you want to remove all items from your cart?",
+   "remove_from_cart": "Remove from Cart"
 
   
 

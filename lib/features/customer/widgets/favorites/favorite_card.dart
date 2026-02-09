@@ -31,6 +31,7 @@ class FavoriteCard extends StatelessWidget {
               '${favorite.getName(isArabic)} ${'removed_from_favorites'.tr(context)}',
             ),
             duration: const Duration(seconds: 2),
+            backgroundColor: Colors.orange,
           ),
         );
       },
@@ -40,6 +41,7 @@ class FavoriteCard extends StatelessWidget {
           MaterialPageRoute(
             builder: (_) => ProductDetailsScreen(
               product: {
+                'id': favorite.id,
                 'name': favorite.getName(isArabic),
                 'price': favorite.price,
                 'image': favorite.imageUrl,

@@ -1,50 +1,55 @@
 import 'package:flutter/material.dart';
-import '../../../../core/localization/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/responsive.dart';
+import '../../../../core/localization/app_localizations.dart';
 
-class CartEmptyClean extends StatelessWidget {
-  const CartEmptyClean({super.key});
+class CartEmptyState extends StatelessWidget {
+  const CartEmptyState({super.key});
 
   @override
   Widget build(BuildContext context) {
     final r = context.responsive;
 
     return Center(
-      child: Padding(
-        padding: EdgeInsets.all(r.spacing(32)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: r.responsive(mobile: 120, tablet: 150, desktop: 180),
-              height: r.responsive(mobile: 120, tablet: 150, desktop: 180),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.shopping_cart_outlined,
-                size: r.responsive(mobile: 60, tablet: 75, desktop: 90),
-                color: Colors.black38,
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(r.spacing(30)),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              shape: BoxShape.circle,
             ),
-            SizedBox(height: r.spacing(24)),
-            Text(
-              'empty_cart'.tr(context),
-              style: TextStyle(
-                fontSize: r.fontSize(22),
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+            child: Icon(
+              Icons.shopping_cart_outlined,
+              size: r.responsive(mobile: 80, tablet: 100, desktop: 120),
+              color: AppColors.primary,
             ),
-            SizedBox(height: r.spacing(12)),
-            Text(
-              'empty_cart_message'.tr(context),
-              style: TextStyle(fontSize: r.fontSize(14), color: Colors.black54),
+          ),
+          SizedBox(height: r.spacing(24)),
+          Text(
+            'cart_empty'.tr(context),
+            style: GoogleFonts.cairo(
+              fontSize: r.fontSize(22),
+              fontWeight: FontWeight.w800,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          SizedBox(height: r.spacing(12)),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: r.spacing(40)),
+            child: Text(
+              'start_adding_cart'.tr(context),
+              style: GoogleFonts.cairo(
+                fontSize: r.fontSize(15),
+                color: AppColors.textSecondary,
+                height: 1.5,
+              ),
               textAlign: TextAlign.center,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

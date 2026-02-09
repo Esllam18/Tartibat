@@ -8,18 +8,23 @@ import 'package:tartibat/features/customer/widgets/home/product_details/product_
 import 'package:tartibat/features/customer/widgets/home/product_details/product_specifications_card.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/responsive.dart';
+import '../data/models/product_model.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> product;
+  final Product? productModel;
 
-  const ProductDetailsScreen({super.key, required this.product});
+  const ProductDetailsScreen({
+    super.key,
+    required this.product,
+    this.productModel,
+  });
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  bool _isFavorite = false;
   int _quantity = 1;
 
   @override
@@ -33,8 +38,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         slivers: [
           ProductDetailsAppBar(
             imageUrl: widget.product['image'] as String,
-            isFavorite: _isFavorite,
-            onFavoriteToggle: () => setState(() => _isFavorite = !_isFavorite),
+            productId: widget.product['id'] as String? ?? '',
+            productModel: widget.productModel,
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -63,6 +68,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       bottomNavigationBar: ProductAddToCartBar(
         quantity: _quantity,
         price: widget.product['price'],
+        productModel: widget.productModel, // ✅ MUST PASS THIS
       ),
     );
   }
