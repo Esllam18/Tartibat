@@ -97,11 +97,12 @@ class MerchantOrderCard extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.update, size: 18),
+                  icon: const Icon(Icons.update, size: 18, color: Colors.white),
                   label: Text(
                     'update_status'.tr(context),
                     style: GoogleFonts.cairo(
                       fontSize: r.fontSize(12),
+                      color: Colors.white,
                       fontWeight: FontWeight.w700,
                     ),
                   ),

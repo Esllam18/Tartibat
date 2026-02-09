@@ -590,7 +590,16 @@
   "video_added_successfully": "✅ تمت إضافة الفيديو بنجاح",
   "error": "❌ خطأ",
   "add_at_least_one_image": "أضف صورة أو فيديو واحد على الأقل",
-  "please_add_product_image": "الرجاء إضافة صورة للمنتج على الأقل"
+  "please_add_product_image": "الرجاء إضافة صورة للمنتج على الأقل",
+ 
+  "error_loading_products": "خطأ في تحميل المنتجات",
+  "create_category": "إنشاء فئة",
+  "new_category_will_be_created": "سيتم إنشاء هذه الفئة الجديدة",
+  "please_select_category": "الرجاء اختيار فئة",
+  "custom_category_name": "اسم الفئة المخصصة",
+  "enter_category_name": "أدخل اسم الفئة",
+  "please_enter_custom_category": "الرجاء إدخال اسم فئة مخصصة",
+  "custom_category_helper": "أدخل اسمًا فريدًا للفئة المخصصة"
 
 
 

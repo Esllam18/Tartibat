@@ -23,6 +23,7 @@ import 'features/splash/view/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await SeedDataService.clearAllData();
   await SeedDataService.initialize();
   // Initialize Customer services
   final favoritesService = await FavoritesService.getInstance();

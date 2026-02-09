@@ -573,7 +573,21 @@
   "error": "❌ Error",
   "product_media": "Product Media",
   "add_at_least_one_image": "Add at least one image or video",
-  "please_add_product_image": "Please add at least one product image"
+  "please_add_product_image": "Please add at least one product image",
+  
+ 
+  "error_loading_products": "Error Loading Products",
+   "create_category": "Create category",
+  "new_category_will_be_created": "This new category will be created",
+
+  "please_select_category": "Please select a category",
+  "custom_category_name": "Custom Category Name",
+  "enter_category_name": "Enter category name",
+  "please_enter_custom_category": "Please enter a custom category name",
+  "custom_category_helper": "Enter a unique name for your custom category"
+
+
+
 
 
 

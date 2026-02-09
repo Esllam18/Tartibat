@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tartibat/core/widgets/category_selector.dart';
 import '../../../core/widgets/media_picker.dart'; // ✅ Fixed import path
 import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/responsive.dart';
@@ -210,18 +211,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ),
                   SizedBox(height: r.spacing(16)),
 
-                  // Category
-                  _buildTextField(
-                    controller: _categoryController,
-                    label: 'category'.tr(context),
-                    icon: Icons.category_outlined,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'please_enter_category'.tr(context);
-                      }
-                      return null;
+                  CategorySelector(
+                    initialCategory: null,
+                    onCategorySelected: (category) {
+                      _categoryController.text = category;
                     },
                   ),
+                  SizedBox(height: r.spacing(16)),
                   SizedBox(height: r.spacing(20)),
 
                   // Available Toggle

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tartibat/core/widgets/category_selector.dart';
 import 'package:tartibat/core/widgets/media_picker.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/responsive.dart';
@@ -176,22 +177,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     icon: Icons.attach_money,
                     keyboardType: TextInputType.number,
                     validator: (v) {
-                      if (v?.isEmpty ?? true)
+                      if (v?.isEmpty ?? true) {
                         return 'please_enter_price'.tr(context);
-                      if (double.tryParse(v!) == null)
+                      }
+                      if (double.tryParse(v!) == null) {
                         return 'invalid_price'.tr(context);
+                      }
                       return null;
                     },
                   ),
                   SizedBox(height: r.spacing(16)),
-                  _buildTextField(
-                    controller: _categoryController,
-                    label: 'category'.tr(context),
-                    icon: Icons.category_outlined,
-                    validator: (v) => v?.isEmpty ?? true
-                        ? 'please_enter_category'.tr(context)
-                        : null,
+                  CategorySelector(
+                    initialCategory: null,
+                    onCategorySelected: (category) {
+                      _categoryController.text = category;
+                    },
                   ),
+                  SizedBox(height: r.spacing(16)),
                   SizedBox(height: r.spacing(20)),
 
                   // Available toggle
